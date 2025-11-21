@@ -24,12 +24,13 @@ function AccordionTrigger({ className, children, ...props }) {
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          " flex flex-1 items-start justify-between gap-1 rounded-md text-left text-sm font-medium transition-all outline-none disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-0",
+          " flex flex-1 items-start justify-between gap-1 rounded-md text-left text-sm font-medium transition-all outline-none disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>img]:rotate-90",
           className
         )}
         {...props}
       >
-        <ChevronDownIcon className="text-muted-foreground -rotate-90 pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+        {/* <ChevronDownIcon className="text-muted-foreground -rotate-90 pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" /> */}
+        {/* <img className="w-4 h-4 pointer-events-none shrink-0 translate-y-0.5 transition-transform duration-200" src="/icons/darkTheme/chevronDown.svg" alt="" /> */}
         {children}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

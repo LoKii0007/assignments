@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import InfoCard from "@/components/common/InfoCard";
 import DoubleBarChart from "@/components/charts/DoubleBarChart";
 import ProductList from "./ProductList";
@@ -8,6 +8,7 @@ import ExampleChart from "@/components/charts/ExampleChart";
 import WorldMap from "@/components/charts/WorldMap";
 import { THEMES } from "@/utils/constants";
 import { useAppContext } from "@/context/AppContext";
+import useWindow from "@/hooks/useWindow";
 
 const sampleSalesData = [
   { name: "Direct", value: 300.56, fill: "#1C1C1C", darkFill: "#C6C7F8" },
@@ -76,8 +77,16 @@ const infoData = [
 
 const DashboardContent = () => {
   const { theme } = useAppContext();
+  const mainPageRef = useRef(null);
+  const { isDesktop, isTablet, isMobile, isSmall } = useWindow({
+    ref: mainPageRef,
+  });
+
   return (
-    <main className="flex-1 overflow-y-auto p-8 h-full w-full custom-scrollbar">
+    <main
+      ref={mainPageRef}
+      className="flex-1 overflow-y-auto p-4 sm:p-8 h-full w-full custom-scrollbar"
+    >
       {/* Header Section */}
       <div className="mb-3 flex items-center justify-between">
         <h1 className="text-sm font-semibold text-primary-dark dark:text-primary-light">
@@ -85,9 +94,13 @@ const DashboardContent = () => {
         </h1>
       </div>
 
-      {/* Stats Cards Row */}
       <div className="grid grid-cols-4 gap-7 ">
-        <div className="grid grid-cols-2 col-span-2 gap-7">
+        {/* Stats Cards Row */}
+        <div
+          className={`grid ${
+            isTablet || isMobile || isSmall ? "col-span-4" : "col-span-2"
+          } grid-cols-2 gap-4 sm:gap-7`}
+        >
           {/* Customers Card */}
           {infoData.map((item, idx) => (
             <InfoCard
@@ -104,9 +117,13 @@ const DashboardContent = () => {
         </div>
 
         {/* Charts Row */}
-        <div className="grid grid-cols-2 col-span-2">
+        <div
+          className={`grid grid-cols-2 ${
+            isTablet || isMobile || isSmall ? "col-span-4" : "col-span-2"
+          } min-h-[252px]`}
+        >
           {/* Projections vs Actuals Chart */}
-          <div className="col-span-2 bg-[#F7F9FB] dark:bg-[#FFFFFF0D] rounded-[16px] p-6 h-full flex flex-col gap-8 w-full">
+          <div className="col-span-2 bg-[#F7F9FB] dark:bg-[#FFFFFF0D] rounded-[16px] p-4 sm:p-6 h-full flex flex-col gap-8 w-full">
             <h3 className="text-sm font-semibold text-primary-dark dark:text-primary-light leading-[20px] tracking-0">
               Projections vs Actuals
             </h3>
@@ -115,35 +132,52 @@ const DashboardContent = () => {
         </div>
 
         {/* Revenue Line Chart */}
-        <div className="col-span-3 bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-6 rounded-[16px] font-[Inter] flex flex-col gap-8">
-          <div className="flex items-center gap-4">
-            <h3 className="text-sm font-semibold text-primary-dark dark:text-primary-light leading-[20px] tracking-0">
-              Revenue
-            </h3>
-            <p className="text-sm text-[#1C1C1C33] dark:text-[#FFFFFF33] leading-[20px] tracking-0">
-              |
-            </p>
-            <div className="flex items-center text-xs py-0.5 ps-1 pe-2">
-              <div className="h-4 w-4 flex items-center justify-center">
-                <div className="w-1.5 h-1.5 bg-primary-dark dark:bg-[#C6C7F8] rounded-full"></div>
-              </div>
-              <p className="text-xs text-primary-dark dark:text-primary-light leading-[18px] tracking-0">
-                Current Week<span className="font-semibold ps-2">$58,211</span>
+        <div
+          className={`${
+            isDesktop ? "col-span-3" : "col-span-4"
+          } bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] font-[Inter] flex flex-col gap-8`}
+        >
+          <div className="flex items-start sm:items-center gap-4 flex-col sm:flex-row ">
+            <div className="flex items-center space-x-4">
+              <h3 className="text-sm font-semibold text-primary-dark dark:text-primary-light leading-[20px] tracking-0">
+                Revenue
+              </h3>
+              <p className="text-sm text-[#1C1C1C33] dark:text-[#FFFFFF33] leading-[20px] tracking-0">
+                |
               </p>
             </div>
-            <div className="flex items-center text-xs py-0.5 ps-1 pe-2">
-              <div className="h-4 w-4 flex items-center justify-center">
-                <div className="w-1.5 h-1.5 bg-[#A8C5DA] rounded-full"></div>
+            <div className="sm:space-x-4 flex sm:items-center sm:flex-row flex-col">
+
+              <div className="flex items-center text-xs py-0.5 ps-1 pe-2">
+                <div className="h-4 w-4 flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 bg-primary-dark dark:bg-[#C6C7F8] rounded-full"></div>
+                </div>
+                <p className="text-xs text-primary-dark dark:text-primary-light leading-[18px] tracking-0">
+                  Current Week
+                  <span className="font-semibold ps-2">$58,211</span>
+                </p>
               </div>
-              <p className="text-xs text-primary-dark dark:text-primary-light leading-[18px] tracking-0">
-                Previous Week<span className="font-semibold ps-2">$68,768</span>
-              </p>
+
+              <div className="flex items-center text-xs py-0.5 ps-1 pe-2">
+                <div className="h-4 w-4 flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 bg-[#A8C5DA] rounded-full"></div>
+                </div>
+                <p className="text-xs text-primary-dark dark:text-primary-light leading-[18px] tracking-0">
+                  Previous Week
+                  <span className="font-semibold ps-2">$68,768</span>
+                </p>
+              </div>
             </div>
           </div>
           <Chart />
         </div>
 
-        <div className="bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-6 rounded-[16px] space-y-4 flex flex-col font-[Inter]">
+        {/* world map  */}
+        <div
+          className={` ${
+            isDesktop ? "col-span-1" : "xxs:col-span-2 col-span-4"
+          } bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] space-y-4 flex flex-col font-[Inter] max-h-[400px]`}
+        >
           <h3 className="text-sm font-semibold text-primary-dark dark:text-primary-light leading-[20px] tracking-0 shrink-0">
             Revenue by Location
           </h3>
@@ -172,10 +206,18 @@ const DashboardContent = () => {
         </div>
 
         {/* Top Selling Products Table */}
-        <ProductList />
+        {isDesktop && (
+          <div className=" col-span-4">
+            <ProductList />
+          </div>
+        )}
 
         {/* Total Sales Donut Chart */}
-        <div className="bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-6 rounded-[16px] space-y-4 flex flex-col font-[Inter]">
+        <div
+          className={` ${
+            isDesktop ? "col-span-1" : "xxs:col-span-2 col-span-4"
+          } bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] space-y-4 flex flex-col font-[Inter] max-h-[400px]`}
+        >
           <h3 className="text-sm font-semibold text-primary-dark leading-[20px] tracking-0 shrink-0 dark:text-primary-light">
             Total Sales
           </h3>
@@ -192,7 +234,10 @@ const DashboardContent = () => {
                 <div className="flex items-center py-0.5 pe-2 ps-1">
                   <div className="w-4 h-4 flex items-center justify-center">
                     <div
-                      style={{ backgroundColor: theme === THEMES.LIGHT ? item.fill : item.darkFill }}
+                      style={{
+                        backgroundColor:
+                          theme === THEMES.LIGHT ? item.fill : item.darkFill,
+                      }}
                       className="w-1.5 h-1.5 rounded-full"
                     ></div>
                   </div>
@@ -203,6 +248,12 @@ const DashboardContent = () => {
             ))}
           </div>
         </div>
+
+        {!isDesktop && (
+          <div className="col-span-4">
+            <ProductList />
+          </div>
+        )}
       </div>
     </main>
   );

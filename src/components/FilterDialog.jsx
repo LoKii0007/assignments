@@ -124,7 +124,7 @@ export function FilterDialog({
             </div>
           </div>
         </div>
-        <DialogFooter className="flex justify-between! w-full gap-4 mt-6">
+        <DialogFooter className="flex flex-row! justify-between! w-full gap-4 mt-6">
           <button
             onClick={handleReset}
             disabled={selectedStatuses.size === 0}

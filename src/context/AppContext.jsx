@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { THEMES } from "@/utils/constants";
+import useWindow from "@/hooks/useWindow";
 
 export const AppContext = createContext();
 
@@ -14,6 +15,9 @@ export const AppProvider = ({ children }) => {
     "/pages/corporate",
   ]);
   const [theme, setTheme] = useState(THEMES.LIGHT);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(window.innerWidth > 1024 ? true : false);
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(window.innerWidth > 1024 ? true : false);
+  const { isSmall: isSmallWindow } = useWindow();
 
   const addToRecentItems = (path) => {
     setRecentlyItems((prev) => {
@@ -26,6 +30,23 @@ export const AppProvider = ({ children }) => {
     setTheme((prev) => (prev === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT));
   };
 
+  const toggleLeftSidebar =() => {
+    setIsLeftSidebarOpen((prev) => {
+      if (isSmallWindow) {
+        setIsRightSidebarOpen(false);
+      }
+      return !prev;
+    });
+  }
+
+  const toggleRightSidebar = () => {
+    setIsRightSidebarOpen((prev) => {
+      if (isSmallWindow) {
+        setIsLeftSidebarOpen(false);
+      }
+      return !prev;
+    });
+  }
   useEffect(() => {
     const root = document.documentElement;
 
@@ -47,6 +68,12 @@ export const AppProvider = ({ children }) => {
           addToRecentItems,
           theme,
           toggleTheme,
+          isRightSidebarOpen,
+          setIsRightSidebarOpen,
+          isLeftSidebarOpen,
+          setIsLeftSidebarOpen,
+          toggleLeftSidebar,
+          toggleRightSidebar,
         }}
       >
         {children}

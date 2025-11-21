@@ -95,11 +95,11 @@ const ProductList = ({ productList }) => {
   }, [checkedItems, paginatedProducts]);
 
   return (
-    <div className="flex flex-col font-[Inter] gap-3">
+    <div className="flex flex-col font-[Inter] gap-3 overflow-x-auto custom-scrollbar">
       <table className="w-full ">
         <thead>
           <tr className="text-left border-b border-[#1C1C1C33] dark:border-[#FFFFFF33] text-xs text-[#1C1C1C66] dark:text-[#FFFFFF66] leading-[18px] tracking-0">
-            <th className="py-2 px-3">
+            <th className="py-2 px-3 hidden sm:table-cell">
               <label
                 htmlFor="select-all-checkbox"
                 className="cursor-pointer"
@@ -125,9 +125,9 @@ const ProductList = ({ productList }) => {
             </th>
             <th className="py-2 px-3">Order ID</th>
             <th className="py-3 pe-3">User</th>
-            <th className="py-2 px-3">Project</th>
-            <th className="py-2 px-3">Address</th>
-            <th className="py-2 px-3">Date</th>
+            <th className="py-2 px-3 hidden sm:table-cell">Project</th>
+            <th className="py-2 px-3 hidden md:table-cell">Address</th>
+            <th className="py-2 px-3 hidden lg:table-cell">Date</th>
             <th className="py-2 px-3">Status</th>
           </tr>
         </thead>
@@ -138,7 +138,7 @@ const ProductList = ({ productList }) => {
                 key={product.id}
                 className="border-b border-[#1C1C1C0D] dark:border-[#FFFFFF1A]"
               >
-                <td className="py-2 px-3 ">
+                <td className="py-2 px-3 hidden sm:table-cell">
                   <label
                     htmlFor={`checkbox-${product.id}`}
                     className="cursor-pointer"
@@ -172,14 +172,14 @@ const ProductList = ({ productList }) => {
                       alt={product.user}
                       className="w-6 h-6 rounded-full object-cover"
                     />
-                    <span className="text-sm text-primary-dark">
+                    <span className="text-sm">
                       {product.user}
                     </span>
                   </div>
                 </td>
-                <td className="py-2 px-3">{product.project}</td>
-                <td className="py-2 px-3">{product.address}</td>
-                <td className="py-2 px-3">
+                <td className="py-2 px-3 hidden sm:table-cell">{product.project}</td>
+                <td className="py-2 px-3 hidden md:table-cell">{product.address}</td>
+                <td className="py-2 px-3 hidden lg:table-cell">
                   <span className="flex items-center gap-1 ">
                     <img
                       src={

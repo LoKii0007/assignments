@@ -21,11 +21,11 @@ const InfoCard = ({
           backgroundColor: theme === THEMES.LIGHT ? color : darkColor,
           color: theme === THEMES.DARK ? darkColorText : "#1C1C1C",
         }}
-        className="rounded-[16px] p-6 space-y-2 font-[Inter] leading-[20px] tracking-0"
+        className="rounded-[16px] p-4 sm:p-6 space-y-2 font-[Inter] leading-[20px] tracking-0"
       >
         <div className="text-sm font-semibold">{title}</div>
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-semibold leading-[36px] tracking-0">
+          <div className="text-xl sm:text-2xl font-semibold leading-[36px] tracking-0">
             {includeCurrency ? `$${value}` : value}
           </div>
           <div className="flex items-center text-xs leading-[18px] tracking-0 gap-1">

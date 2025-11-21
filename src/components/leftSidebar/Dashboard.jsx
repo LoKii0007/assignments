@@ -6,77 +6,9 @@ import {
 } from "@/components/ui/accordion";
 import React, { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { SIDEBAR_COMPONENTS, THEMES } from "@/utils/constants";
+import { SIDEBAR_COMPONENTS, THEMES, dashboardItems } from "@/utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
-
-const dashboardItems = [
-  {
-    href: "/dashboard/default",
-    name: "default",
-    label: "Default",
-    hasSubRoutes: false,
-    icon: "dashboard",
-    subRoutes: [],
-  },
-  {
-    href: "/dashboard/ecommerce",
-    name: "eCommerce",
-    label: "eCommerce",
-    icon: "eCommerce",
-    hasSubRoutes: true,
-    subRoutes: [
-      {
-        href: "/example1",
-        name: "example1",
-        label: "Example1",
-      },
-      {
-        href: "/example1",
-        name: "example1",
-        label: "Example1",
-      },
-    ],
-  },
-  {
-    href: "/dashboard/projects",
-    name: "projects",
-    label: "Projects",
-    icon: "projects",
-    hasSubRoutes: true,
-    subRoutes: [
-      {
-        href: "/dashboard/projects",
-        name: "example1",
-        label: "Example1",
-      },
-      {
-        href: "/dashboard/projects",
-        name: "example1",
-        label: "Example1",
-      },
-    ],
-  },
-  {
-    href: "/dashboard/online-courses",
-    name: "online-courses",
-    label: "Online Courses",
-    icon: "onlineCourses",
-    hasSubRoutes: true,
-    subRoutes: [
-      {
-        href: "/dashboard/online-courses",
-        name: "example1",
-        label: "Example1",
-      },
-      {
-        href: "/dashboard/online-courses",
-        name: "example1",
-        label: "Example1",
-      },
-    ],
-  },
-];
 
 const Dashboard = ({
   activeItem,
@@ -85,12 +17,12 @@ const Dashboard = ({
   setActiveComponent,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [accordionValue, setAccordionValue] = useState("item-1");
+  const [accordionValue, setAccordionValue] = useState(undefined);
   const itemsRef = useRef([]);
   const parentRef = useRef(null);
   const [pillTop, setPillTop] = useState(0);
   const navigate = useNavigate();
-  const { addToRecentItems, theme } = useAppContext();
+  const { addToRecentItems, theme, isLeftSidebarOpen } = useAppContext();
   const pathname = useLocation().pathname;
 
   const handleItemClick = (item, index) => {
@@ -144,8 +76,18 @@ const Dashboard = ({
   return (
     <>
       <div className="sidebar-dashboard flex flex-col pb-3 font-[Inter]">
-        <div className="text-sm text-[#1C1C1C66] dark:text-[#FFFFFF66] font-medium px-1 py-3">
-          <p>Dashboards</p>
+        <div
+          className={`text-sm text-[#1C1C1C66] dark:text-[#FFFFFF66] font-medium px-1 py-3 flex items-center  `}
+        >
+          {isLeftSidebarOpen ? (
+            <p>Dashboards</p>
+          ) : (
+            <img
+              className="shrink-0 w-5 h-5"
+              src={`/icons/${theme === THEMES.LIGHT ? "dashboards" : "darkTheme/dashboards"}.svg`}
+              alt=""
+            />
+          )}
         </div>
         <div className="flex flex-col gap-1 relative" ref={parentRef}>
           <div
@@ -187,33 +129,66 @@ const Dashboard = ({
                       onMouseEnter={() => handleItemMouseEnter(index)}
                       onMouseLeave={() => handleItemMouseLeave()}
                     >
-                      <div
-                        className="flex gap-1 text-primary-dark dark:text-primary-light"
-                        key={item.href}
-                      >
-                        <div>
-                          <img
-                            src={`/icons/${
-                              theme === THEMES.LIGHT
-                                ? item.icon
-                                : `darkTheme/${item.icon}`
-                            }.svg`}
-                            alt=""
-                          />
+                      <>
+                        <img
+                          className="w-4 h-4 pointer-events-none shrink-0 translate-y-0.5 transition-transform duration-200"
+                          src={
+                            theme === THEMES.LIGHT
+                              ? "/icons/chevronDown.svg"
+                              : "/icons/darkTheme/chevronDown.svg"
+                          }
+                          alt=""
+                        />
+
+                        <div
+                          className="flex gap-1 text-primary-dark dark:text-primary-light"
+                          key={item.href}
+                        >
+                          <div className="shrink-0 w-5 h-5">
+                            <img
+                              className="shrink-0 w-5 h-5"
+                              src={`/icons/${
+                                theme === THEMES.LIGHT
+                                  ? item.icon
+                                  : `darkTheme/${item.icon}`
+                              }.svg`}
+                              alt=""
+                            />
+                          </div>
+                          {isLeftSidebarOpen && (
+                            <p
+                              className={`text-sm leading-[20px] tracking-[0px] transition-all `}
+                            >
+                              {item.label}
+                            </p>
+                          )}
                         </div>
-                        <p className="text-sm leading-[20px] tracking-[0px]">
-                          {item.label}
-                        </p>
-                      </div>
+                      </>
                     </AccordionTrigger>
-                    <AccordionContent className="ps-13 pb-0">
+                    <AccordionContent
+                      className={` pb-0 ${
+                        isLeftSidebarOpen ? "ps-13" : "ps-5"
+                      }`}
+                    >
                       <div className="flex flex-col gap-1 py-1">
                         {item.subRoutes.map((subRoute) => (
                           <button
                             key={subRoute.href}
                             className="text-left text-sm text-primary-dark hover:bg-[#F5F5F5] dark:text-primary-light dark:hover:bg-tertiary-dark rounded-[8px] px-2 py-1 hover-transition"
                           >
-                            {subRoute.label}
+                            {!isLeftSidebarOpen ? (
+                              <img
+                                className="shrink-0 w-5 h-5"
+                                src={`/icons/${
+                                  theme === THEMES.LIGHT
+                                    ? item.icon
+                                    : `darkTheme/${item.icon}`
+                                }.svg`}
+                                alt=""
+                              />
+                            ) : (
+                              subRoute.label
+                            )}
                           </button>
                         ))}
                       </div>
@@ -223,8 +198,8 @@ const Dashboard = ({
                   <div
                     ref={(el) => (itemsRef.current[index] = el)}
                     className={cn(
-                      "flex gap-1 text-primary-dark dark:text-primary-light px-2 py-1 rounded-[8px] hover:cursor-pointer hover-transition",
-                      activeItem === item.name
+                      "flex gap-1 text-primary-dark dark:text-primary-light px-2 py-1 rounded-[8px] hover:cursor-pointer hover-transition ",
+                      activeItem === item.name && activeComponent === SIDEBAR_COMPONENTS.DASHBOARD
                         ? "bg-[#F5F5F5] dark:bg-[#FFFFFF1A]"
                         : "hover:bg-[#F5F5F5] dark:hover:bg-tertiary-dark"
                     )}
@@ -233,11 +208,23 @@ const Dashboard = ({
                     onMouseEnter={() => handleItemMouseEnter(index)}
                     onMouseLeave={() => handleItemMouseLeave()}
                   >
-                    <div className="w-4 h-4"></div>
-                    <div>
-                      <img src={`/icons/sidebar/${item.icon}`} alt="" />
+                    <div className="w-4 h-4 shrink-0"></div>
+                    <div className="shrink-0 w-5 h-5">
+                      <img
+                        className="shrink-0 w-5 h-5"
+                        src={`/icons/${
+                          theme === THEMES.LIGHT
+                            ? item.icon
+                            : `darkTheme/${item.icon}`
+                        }.svg`}
+                        alt=""
+                      />
                     </div>
-                    <p className="text-sm ">{item.label}</p>
+                    {isLeftSidebarOpen && (
+                      <p className="text-sm leading-[20px] tracking-[0px]">
+                        {item.label}
+                      </p>
+                    )}
                   </div>
                 )}
               </>

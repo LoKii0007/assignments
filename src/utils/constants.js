@@ -21,6 +21,162 @@ export const THEMES = {
   DARK: "dark",
 };
 
+export const dashboardItems = [
+  {
+    href: "/dashboard/default",
+    name: "default",
+    label: "Default",
+    hasSubRoutes: false,
+    icon: "dashboard",
+    subRoutes: [],
+  },
+  {
+    href: "/dashboard/ecommerce",
+    name: "eCommerce",
+    label: "eCommerce",
+    icon: "eCommerce",
+    hasSubRoutes: true,
+    subRoutes: [
+      {
+        href: "/example1",
+        name: "example1",
+        label: "Example1",
+        icon: "eCommerce",
+      },
+      {
+        href: "/example1",
+        name: "example1",
+        label: "Example1",
+        icon: "eCommerce",
+      },
+    ],
+  },
+  {
+    href: "/dashboard/projects",
+    name: "projects",
+    label: "Projects",
+    icon: "projects",
+    hasSubRoutes: true,
+    subRoutes: [
+      {
+        href: "/dashboard/projects",
+        name: "example1",
+        label: "Example1",
+        icon: "projects",
+      },
+      {
+        href: "/dashboard/projects",
+        name: "example1",
+        label: "Example1",
+        icon: "projects",
+      },
+    ],
+  },
+  {
+    href: "/dashboard/online-courses",
+    name: "online-courses",
+    label: "Online Courses",
+    icon: "onlineCourses",
+    hasSubRoutes: true,
+    subRoutes: [
+      {
+        href: "/dashboard/online-courses",
+        name: "example1",
+        label: "Example1",
+        icon: "onlineCourses",
+      },
+      {
+        href: "/dashboard/online-courses",
+        name: "example1",
+        label: "Example1",
+        icon: "onlineCourses",
+      },
+    ],
+  },
+];
+
+export const pagesItems = [
+  {
+    href: "/pages/user-profile",
+    name: "user-profile",
+    label: "User Profile",
+    icon: "userProfile",
+    hasSubRoutes: true,
+    subRoutes: [
+      { href: "/pages/user-profile", name: "overview", label: "Overview", icon: "userProfile" },
+      { href: "/pages/user-profile", name: "projects", label: "Projects", icon: "userProfile" },
+      {
+        href: "/pages/user-profile",
+        name: "campaigns",
+        label: "Campaigns",
+        icon: "userProfile",
+      },
+      {
+        href: "/pages/user-profile",
+        name: "documents",
+        label: "Documents",
+        icon: "userProfile",
+      },
+      {
+        href: "/pages/user-profile",
+        name: "followers",
+        label: "Followers",
+        icon: "userProfile",
+      },
+    ],
+  },
+  {
+    href: "/pages/account",
+    name: "account-settings",
+    label: "Account",
+    icon: "account",
+    hasSubRoutes: true,
+    subRoutes: [
+      { href: "/pages/account", name: "settings", label: "Settings", icon: "account" },
+      { href: "/pages/account", name: "security", label: "Security", icon: "account" },
+      { href: "/pages/account", name: "billing", label: "Billing", icon: "account" },
+      { href: "/pages/account", name: "billing", label: "Billing", icon: "account" },
+    ],
+  },
+  {
+    href: "/pages/corporate",
+    name: "corporate-settings",
+    label: "Corporate",
+    icon: "users",
+    hasSubRoutes: true,
+    subRoutes: [
+      { href: "/pages/corporate", name: "teams", label: "Teams", icon: "users" },
+      { href: "/pages/corporate", name: "policies", label: "Policies", icon: "users" },
+      { href: "/pages/corporate", name: "partners", label: "Partners", icon: "users" },
+      { href: "/pages/corporate", name: "partners", label: "Partners", icon: "users" },
+    ],
+  },
+  {
+    href: "/pages/blog",
+    name: "blog-settings",
+    label: "Blog",
+    icon: "blog",
+    hasSubRoutes: true,
+    subRoutes: [
+      { href: "/pages/blog", name: "articles", label: "Articles", icon: "blog" },
+      { href: "/pages/blog", name: "tutorials", label: "Tutorials", icon: "blog" },
+      { href: "/pages/blog", name: "news", label: "News", icon: "blog" },
+    ],
+  },
+  {
+    href: "/pages/social",
+    name: "social-settings",
+    label: "Social",
+    icon: "social",
+    hasSubRoutes: true,
+    subRoutes: [
+      { href: "/pages/social", name: "feed", label: "Feed", icon: "social" },
+      { href: "/pages/social", name: "messages", label: "Messages", icon: "social" },
+      { href: "/pages/social", name: "groups", label: "Groups", icon: "social" },
+    ],
+  },
+];
+
 export const users = [
   "Natali Craig",
   "Kate Morrison",

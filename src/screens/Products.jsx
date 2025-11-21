@@ -129,7 +129,7 @@ const Products = () => {
 
   return (
     <>
-      <div className="w-full h-full p-8 flex flex-col gap-4">
+      <div className="w-full h-full p-4 sm:p-8 flex flex-col gap-4 overflow-y-auto custom-scrollbar">
         <h1 className="text-sm font-semibold text-primary-dark dark:text-primary-light leading-[20px] tracking-0 shrink-0">
           Order List
         </h1>

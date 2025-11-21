@@ -38,26 +38,26 @@ const sampleProducts = [
 const ProductList = () => {
   const { theme } = useAppContext();
   return (
-    <div className="bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-6 rounded-[16px] space-y-1 font-[Inter] col-span-3">
+    <div className="bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] space-y-1 font-[Inter] w-full overflow-x-auto">
       <h3 className="text-sm font-semibold text-primary-dark leading-[20px] tracking-0 dark:text-primary-light">
         Top Selling Products
       </h3>
       <table className="w-full">
         <thead>
           <tr className="text-left border-b border-[#1C1C1C33] dark:border-[#FFFFFF33] dark:text-[#FFFFFF66] text-xs text-[#1C1C1C66] leading-[18px] tracking-0">
-            <th className="py-2 pe-3 font-medium">Name</th>
-            <th className="py-2 pe-3 font-medium">Price</th>
-            <th className="py-2 pe-3 font-medium">Quantity</th>
-            <th className="py-2 pe-3 font-medium">Amount</th>
+            <th className="py-2 pe-3 font-medium text-ellipsis overflow-hidden whitespace-nowrap">Name</th>
+            <th className="py-2 pe-3 font-medium text-ellipsis overflow-hidden whitespace-nowrap">Price</th>
+            <th className="py-2 pe-3 font-medium text-ellipsis overflow-hidden whitespace-nowrap">Quantity</th>
+            <th className="py-2 pe-3 font-medium text-ellipsis overflow-hidden whitespace-nowrap">Amount</th>
           </tr>
         </thead>
         <tbody className=" text-xs text-primary-dark leading-[18px] tracking-0 dark:text-primary-light">
           {sampleProducts.map((product, idx) => (
             <tr key={idx} className="">
-              <td className="py-2 pe-3">{product.name}</td>
-              <td className="py-2 pe-3">{product.price}</td>
-              <td className="py-2 pe-3">{product.qty}</td>
-              <td className="py-2 pe-3">{product.amount}</td>
+              <td className="py-2 pe-3 text-ellipsis overflow-hidden whitespace-nowrap">{product.name}</td>
+              <td className="py-2 pe-3 text-ellipsis overflow-hidden whitespace-nowrap">{product.price}</td>
+              <td className="py-2 pe-3 text-ellipsis overflow-hidden whitespace-nowrap">{product.qty}</td>
+              <td className="py-2 pe-3 text-ellipsis overflow-hidden whitespace-nowrap">{product.amount}</td>
             </tr>
           ))}
         </tbody>

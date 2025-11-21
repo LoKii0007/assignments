@@ -3,6 +3,7 @@ import { Bug, UserPlus, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppContext } from "@/context/AppContext";
 import { THEMES } from "@/utils/constants";
+import useWindow from "@/hooks/useWindow";
 
 const notifications = [
   {
@@ -87,14 +88,32 @@ const contacts = [
 ];
 
 const RightSidebar = () => {
-  const { theme } = useAppContext();
+  const { theme, toggleRightSidebar } = useAppContext();
+  const { isDesktop } = useWindow();
+
   return (
-    <aside className="w-full border-l border-[#1C1C1C1A] dark:border-tertiary-dark p-5 space-y-6 font-[Inter]">
+    <aside className="w-full border-l border-[#1C1C1C1A] dark:border-tertiary-dark p-5 space-y-6 font-[Inter] ">
       {/* Notifications Section */}
       <div className="space-y-2">
-        <h2 className="text-sm font-semibold text-primary-dark dark:text-primary-light py-2 px-1 leading-[20px] tracking-0">
-          Notifications
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-primary-dark dark:text-primary-light py-2 px-1 leading-[20px] tracking-0">
+            Notifications
+          </h2>
+          {(!isDesktop) && (
+            <button
+              onClick={toggleRightSidebar}
+              className=" hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition"
+            >
+              <img
+                className="w-7 h-7"
+                src={`/icons/${
+                  theme === THEMES.LIGHT ? "menu.svg" : "/darkTheme/menu.svg"
+                }`}
+                alt=""
+              />
+            </button>
+          )}
+        </div>
         <div className="space-y-2">
           {notifications.map((notif, idx) => (
             <div key={idx} className="flex items-start space-x-2 p-1">
