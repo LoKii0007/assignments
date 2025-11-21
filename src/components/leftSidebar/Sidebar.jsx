@@ -12,7 +12,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="sidebar flex flex-col gap-4 w-full px-4 py-5 border-r border-[#1C1C1C1A] dark:border-tertiary-dark overflow-y-auto">
+      <div className="sidebar flex flex-col gap-4 w-full px-4 py-5 border-r border-[#1C1C1C1A] dark:border-tertiary-dark">
         <div className="flex items-center gap-2">
           <img className="rounded-full w-6 h-6" src="/images/user.png" alt="" />
           <p className="text-primary-dark dark:text-primary-light">ByteWind</p>

@@ -89,7 +89,7 @@ const contacts = [
 const RightSidebar = () => {
   const { theme } = useAppContext();
   return (
-    <aside className="w-full border-l border-[#1C1C1C1A] p-5 space-y-6 font-[Inter]">
+    <aside className="w-full border-l border-[#1C1C1C1A] dark:border-tertiary-dark p-5 space-y-6 font-[Inter]">
       {/* Notifications Section */}
       <div className="space-y-2">
         <h2 className="text-sm font-semibold text-primary-dark dark:text-primary-light py-2 px-1 leading-[20px] tracking-0">

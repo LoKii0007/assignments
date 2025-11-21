@@ -1,36 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Pagination from "../../common/Pagination";
-import { Checkbox } from "../../ui/checkbox";
-
-const getStatusTextColor = (status) => {
-  switch (status) {
-    case "In Progress":
-      return "#8A8CD9";
-    case "Complete":
-      return "#4AA785";
-    case "Pending":
-      return "#59A8D4";
-    case "Approved":
-      return "#FFC555";
-    case "Rejected":
-      return "#1C1C1C66";
-  }
-};
-
-const getStatusBgColor = (status) => {
-  switch (status) {
-    case "In Progress":
-      return "#95A4FC";
-    case "Complete":
-      return "#A1E3CB";
-    case "Pending":
-      return "#B1E3FF";
-    case "Approved":
-      return "#FFE999";
-    case "Rejected":
-      return "#1C1C1C66";
-  }
-};
+import { useAppContext } from "@/context/AppContext";
+import { THEMES } from "@/utils/constants";
+import {
+  getStatusTextColor,
+  getStatusBgColor,
+  getStatusDarkTextColor,
+  getStatusDarkBgColor,
+} from "@/utils/helpers";
 
 const ProductList = ({ productList }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,6 +18,21 @@ const ProductList = ({ productList }) => {
     Math.max(1, Math.ceil(productList.length / displayCount))
   );
   const [paginatedProducts, setPaginatedProducts] = useState([]);
+  const [checkedItems, setCheckedItems] = useState(new Set());
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const { theme } = useAppContext();
+
+  const getCheckboxImage = (isChecked) => {
+    if (isChecked) {
+      return theme === THEMES.LIGHT
+        ? "/icons/checkboxTicked.svg"
+        : "/icons/darkTheme/checkboxTicked.svg";
+    } else {
+      return theme === THEMES.LIGHT
+        ? "/icons/checkbox.svg"
+        : "/icons/darkTheme/checkbox.svg";
+    }
+  };
 
   const loadNextPage = useCallback(
     (page) => {
@@ -69,13 +61,67 @@ const ProductList = ({ productList }) => {
     setTotalOrderCount(productList.length);
   }, [productList]);
 
+  //? individual checkbox toggle
+  const handleCheckboxToggle = (productId) => {
+    setCheckedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(productId)) {
+        newSet.delete(productId);
+      } else {
+        newSet.add(productId);
+      }
+      return newSet;
+    });
+  };
+
+  //? all checkbox toggle
+  const handleSelectAll = () => {
+    if (isAllChecked) {
+      setCheckedItems(new Set());
+      setIsAllChecked(false);
+    } else {
+      const allIds = new Set(paginatedProducts.map((p) => p.id));
+      setCheckedItems(allIds);
+      setIsAllChecked(true);
+    }
+  };
+
+  //? update all checkbox
+  useEffect(() => {
+    if (paginatedProducts.length > 0) {
+      const allChecked = paginatedProducts.every((p) => checkedItems.has(p.id));
+      setIsAllChecked(allChecked);
+    }
+  }, [checkedItems, paginatedProducts]);
+
   return (
     <div className="flex flex-col font-[Inter] gap-3">
       <table className="w-full ">
         <thead>
-          <tr className="text-left border-b border-[#1C1C1C33] text-xs text-[#1C1C1C66] leading-[18px] tracking-0">
+          <tr className="text-left border-b border-[#1C1C1C33] dark:border-[#FFFFFF33] text-xs text-[#1C1C1C66] dark:text-[#FFFFFF66] leading-[18px] tracking-0">
             <th className="py-2 px-3">
-              <Checkbox className="shadow-none border-[1.5px] border-[#1c1c1c33] " />
+              <label
+                htmlFor="select-all-checkbox"
+                className="cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSelectAll();
+                }}
+              >
+                <img
+                  key={`select-all-${isAllChecked}-${theme}`}
+                  className="w-4 h-4"
+                  src={getCheckboxImage(isAllChecked)}
+                  alt=""
+                />
+              </label>
+              <input
+                type="checkbox"
+                id="select-all-checkbox"
+                className="hidden"
+                checked={isAllChecked}
+                onChange={handleSelectAll}
+              />
             </th>
             <th className="py-2 px-3">Order ID</th>
             <th className="py-3 pe-3">User</th>
@@ -85,12 +131,38 @@ const ProductList = ({ productList }) => {
             <th className="py-2 px-3">Status</th>
           </tr>
         </thead>
-        <tbody className="text-xs text-primary-dark leading-[18px] tracking-0">
+        <tbody className="text-xs text-primary-dark leading-[18px] tracking-0 dark:text-primary-light">
           {paginatedProducts.map((product) => {
             return (
-              <tr key={product.id} className="border-b border-[#1C1C1C0D]">
+              <tr
+                key={product.id}
+                className="border-b border-[#1C1C1C0D] dark:border-[#FFFFFF1A]"
+              >
                 <td className="py-2 px-3 ">
-                  <Checkbox className="shadow-none border-[1.5px] border-[#1c1c1c33] " />
+                  <label
+                    htmlFor={`checkbox-${product.id}`}
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleCheckboxToggle(product.id);
+                    }}
+                  >
+                    <img
+                      key={`checkbox-${product.id}-${checkedItems.has(
+                        product.id
+                      )}-${theme}`}
+                      className="w-4 h-4"
+                      src={getCheckboxImage(checkedItems.has(product.id))}
+                      alt=""
+                    />
+                  </label>
+                  <input
+                    type="checkbox"
+                    id={`checkbox-${product.id}`}
+                    className="hidden"
+                    checked={checkedItems.has(product.id)}
+                    onChange={() => handleCheckboxToggle(product.id)}
+                  />
                 </td>
                 <td className="py-2 px-3 ">{product.id}</td>
                 <td className="py-2 px-3">
@@ -108,9 +180,13 @@ const ProductList = ({ productList }) => {
                 <td className="py-2 px-3">{product.project}</td>
                 <td className="py-2 px-3">{product.address}</td>
                 <td className="py-2 px-3">
-                  <span className="flex items-center gap-1 text-[#1C1C1C99]">
+                  <span className="flex items-center gap-1 ">
                     <img
-                      src="/icons/CalendarBlank.svg"
+                      src={
+                        theme === THEMES.LIGHT
+                          ? "/icons/calendarBlank.svg"
+                          : "/icons/darkTheme/calendarBlank.svg"
+                      }
                       alt=""
                       className="w-4 h-4"
                     />
@@ -121,14 +197,24 @@ const ProductList = ({ productList }) => {
                   <div className="w-4 h-4 flex justify-center items-center">
                     <div
                       style={{
-                        backgroundColor: getStatusBgColor(product.status),
+                        backgroundColor:
+                          theme === THEMES.LIGHT
+                            ? getStatusBgColor(product.status)
+                            : getStatusDarkBgColor(product.status),
                       }}
                       className="w-1.5 h-1.5 rounded-full"
                     ></div>
                   </div>
-                  <span style={{ color: getStatusTextColor(product.status) }}>
+                  <p
+                    style={{
+                      color:
+                        theme === THEMES.LIGHT
+                          ? getStatusTextColor(product.status)
+                          : getStatusDarkTextColor(product.status),
+                    }}
+                  >
                     {product.status}
-                  </span>
+                  </p>
                 </td>
               </tr>
             );

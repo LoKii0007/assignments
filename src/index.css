@@ -1,6 +1,47 @@
-
-button:hover{
+button:hover {
   cursor: pointer;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #1C1C1C33;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #1C1C1C66;
+
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: #1C1C1C99;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #FFFFFF33;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #FFFFFF33;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #FFFFFF66;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: #FFFFFF99;
 }
 
 @font-face {

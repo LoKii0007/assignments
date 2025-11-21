@@ -8,6 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useAppContext } from "@/context/AppContext";
+import { THEMES } from "@/utils/constants";
 
 const STATUS_OPTIONS = [
   "In Progress",
@@ -22,6 +24,7 @@ export function FilterDialog({
   selectedStatuses: initialSelectedStatuses = [],
   isFilterApplied,
 }) {
+  const { theme } = useAppContext();
   const [selectedStatuses, setSelectedStatuses] = useState(
     new Set(initialSelectedStatuses)
   );
@@ -62,32 +65,42 @@ export function FilterDialog({
   const isAllSelected = selectedStatuses.size === STATUS_OPTIONS.length;
 
   return (
-    <Dialog>
+    <Dialog className="">
       <DialogTrigger asChild>
         <button
-          className={`p-1 hover:bg-[#E5ECF6] rounded-[4px] duration-200 hover:ease-in ease-out transition-all ${
-            isFilterApplied ? "bg-[#d7e4f8]" : ""
+          className={`p-1 hover:bg-[#E5ECF6] rounded-[4px] dark:hover:bg-tertiary-dark hover-transition ${
+            isFilterApplied ? "bg-[#d7e4f8] dark:bg-secondary-dark/50" : ""
           }`}
         >
-          <img className="h-5 w-5" src="/icons/funnel.svg" alt="" />
+          <img
+            className="h-5 w-5"
+            src={
+              theme === THEMES.LIGHT
+                ? "/icons/funnel.svg"
+                : "/icons/darkTheme/funnel.svg"
+            }
+            alt=""
+          />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md font-[Inter]">
+      <DialogContent className="sm:max-w-md font-[Inter] ">
         <DialogHeader>
-          <DialogTitle className="text-sm font-semibold text-primary-dark leading-[20px] tracking-0 ">
+          <DialogTitle className="text-sm font-semibold text-primary-dark dark:text-primary-light leading-[20px] tracking-0 ">
             Filters
           </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-2">
-            <h6 className="text-sm text-primary-dark leading-[20px] tracking-0">
+            <h6 className="text-sm text-primary-dark dark:text-primary-light leading-[20px] tracking-0">
               Status
             </h6>
             <div className="grid grid-cols-3 gap-2">
               <button
                 onClick={handleAllClick}
-                className={`text-xs text-primary-dark leading-[20px] tracking-0 rounded-[8px] py-1 px-2 transition-colors ${
-                  isAllSelected ? "bg-primary-dark text-[#FFFFFF]" : "bg-[#F7F9FB]"
+                className={`text-xs leading-[18px] tracking-0 rounded-[8px] py-1 px-2 hover-transition ${
+                  isAllSelected
+                    ? "bg-[#1c1c1c29] text-primary-dark dark:text-primary-dark dark:bg-primary-light"
+                    : "bg-[#1C1C1C0D] text-primary-dark dark:text-primary-light dark:bg-[#FFFFFF1A]"
                 }`}
               >
                 All
@@ -98,10 +111,10 @@ export function FilterDialog({
                   <button
                     key={status}
                     onClick={() => toggleStatus(status)}
-                    className={`text-xs text-primary-dark leading-[20px] tracking-0 rounded-[8px] py-1 px-2 transition-colors ${
+                    className={`text-xs  leading-[18px] tracking-0 rounded-[8px] py-1 px-2 hover-transition ${
                       isSelected
-                        ? "bg-primary-dark text-[#FFFFFF]"
-                        : "bg-[#F7F9FB]"
+                        ? "bg-[#1c1c1c29] text-primary-dark dark:text-primary-dark dark:bg-primary-light"
+                        : "bg-[#1C1C1C0D] text-primary-dark dark:text-primary-light dark:bg-[#FFFFFF1A]"
                     }`}
                   >
                     {status}
@@ -114,21 +127,21 @@ export function FilterDialog({
         <DialogFooter className="flex justify-between! w-full gap-4 mt-6">
           <button
             onClick={handleReset}
-            className="text-sm font-medium text-primary-dark leading-[20px] tracking-0 rounded-[8px] py-1 px-2 hover:bg-[#F7F9FB] transition-colors"
+            disabled={selectedStatuses.size === 0}
+            className="text-sm font-medium text-primary-dark dark:text-primary-light dark:bg-[#FFFFFF1A] hover:bg-[#1C1C1C29] dark:hover:bg-primary-dark/90 bg-[#1C1C1C0D] leading-[20px] disabled:opacity-50 disabled:cursor-not-allowed tracking-0 rounded-[8px] py-1 px-5 hover-transition"
           >
             Reset
           </button>
           <div className="flex gap-4">
             <DialogClose asChild>
-              <button className="text-sm font-medium text-primary-dark leading-[20px] tracking-0 rounded-[8px] py-1 px-2">
+              <button className="text-sm font-medium text-primary-dark dark:text-primary-light hover:bg-[#1C1C1C0D] dark:hover:bg-tertiary-dark hover-transition leading-[20px] tracking-0 rounded-[8px] py-1 px-5">
                 Cancel
               </button>
             </DialogClose>
             <DialogClose asChild>
               <button
-              
                 onClick={handleApply}
-                className="text-sm text-[#FFFFFF] leading-[20px] tracking-0 bg-primary-dark rounded-[8px] py-1 px-5"
+                className="text-sm text-primary-light dark:text-primary-dark leading-[20px] tracking-0 bg-primary-dark dark:bg-primary-light rounded-[8px] py-1 px-5"
               >
                 Apply
               </button>

@@ -77,7 +77,7 @@ const infoData = [
 const DashboardContent = () => {
   const { theme } = useAppContext();
   return (
-    <main className="flex-1 overflow-y-auto p-8 h-full w-full">
+    <main className="flex-1 overflow-y-auto p-8 h-full w-full custom-scrollbar">
       {/* Header Section */}
       <div className="mb-3 flex items-center justify-between">
         <h1 className="text-sm font-semibold text-primary-dark dark:text-primary-light">

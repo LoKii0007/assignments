@@ -8,7 +8,7 @@ const Layout = () => {
   return (
     <>
       <div className="layout w-screen h-screen flex bg-primary-light dark:bg-primary-dark">
-        <div className="w-[212px] h-full flex shrink-0">
+        <div className="w-[212px] h-full flex shrink-0 overflow-y-auto custom-scrollbar">
           <Sidebar />
         </div>
         <div className="flex flex-1 w-full h-full">
@@ -19,7 +19,7 @@ const Layout = () => {
             </div>
           </div>
         </div>
-        <div className="w-[280px] shrink-0 overflow-y-auto">
+        <div className="w-[280px] shrink-0 overflow-y-auto custom-scrollbar">
           <RightSidebar />
         </div>
       </div>

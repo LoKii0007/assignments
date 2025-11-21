@@ -23,6 +23,18 @@ const HeaderNavbar = () => {
     }
   };
 
+  const getFavIcon = () => {
+    if (favouriteItems.includes(pathname)) {
+      return theme === THEMES.LIGHT
+        ? "/icons/starGolden.svg"
+        : "/icons/darkTheme/starGolden.svg";
+    } else {
+      return theme === THEMES.LIGHT
+        ? "/icons/star.svg"
+        : "/icons/darkTheme/star.svg";
+    }
+  };
+
   return (
     <header className=" dark:bg-primary-dark font-[Inter] leading-[20px] tracking-0 border-b border-[#1C1C1C1A] dark:border-tertiary-dark px-7 py-5 flex items-center justify-between gap-5 w-full">
       <div className="flex items-center space-x-2">
@@ -39,21 +51,7 @@ const HeaderNavbar = () => {
           onClick={handleFavouriteClick}
           className="hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition"
         >
-          <img
-            className="w-7 h-7"
-            src={`/icons/${
-              favouriteItems.includes(pathname)
-                ? `${
-                    theme === THEMES.LIGHT
-                      ? "startGolden.svg"
-                      : "darkTheme/startGolden.svg"
-                  }`
-                : `${
-                    theme === THEMES.LIGHT ? "star.svg" : "darkTheme/star.svg"
-                  }`
-            }`}
-            alt=""
-          />
+          <img className="w-7 h-7" src={getFavIcon()} alt="" />
         </button>
         <div className="flex items-center space-x-2 text-sm">
           {pathSegments.map((segment, index) => (

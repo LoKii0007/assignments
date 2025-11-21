@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useAppContext } from "@/context/AppContext";
+import { THEMES } from "@/utils/constants";
 
 function Pagination({
   startPage,
@@ -14,6 +16,7 @@ function Pagination({
   displayCount,
 }) {
   const maxVisiblePages = 5;
+  const { theme } = useAppContext();
 
   const handlePageBtn = (page) => {
     setCurrentPage(page);
@@ -22,21 +25,12 @@ function Pagination({
 
   const handlePrevRange = () => {
     if (currentPage > 1) {
-      // const newStart = Math.max(1, startPage - maxVisiblePages);
-      // setStartPage(newStart);
-      // handlePageBtn(newStart);
       loadNextPage(currentPage - 1);
     }
   };
 
   const handleNextRange = () => {
     if (currentPage < totalPages) {
-      // const newStart = Math.min(
-      //   totalPages - maxVisiblePages + 1,
-      //   startPage + maxVisiblePages
-      // );
-      // setStartPage(newStart);
-      // handlePageBtn(newStart);
       loadNextPage(currentPage + 1);
     }
   };
@@ -78,7 +72,7 @@ function Pagination({
           onClick={handlePrevRange}
           disabled={currentPage === 1}
         >
-          <img className="w-5 h-5" src="/icons/chevronLeft.svg" alt="" />
+          <img className="w-5 h-5" src={theme === THEMES.LIGHT ? "/icons/chevronLeft.svg" : "/icons/darkTheme/chevronLeft.svg"} alt="" />
         </button>
 
         {/* ----------page buttons ------- */}
@@ -92,10 +86,10 @@ function Pagination({
                 disabled={currentPage === startPage + index}
                 key={index}
                 onClick={() => handlePageBtn(startPage + index)}
-                className={`text-sm text-primary-dark leading-[20px] tracking-0 w-7 h-7 rounded-[8px] ${
+                className={`text-sm text-primary-dark dark:text-primary-light leading-[20px] tracking-0 w-7 h-7 rounded-[8px] ${
                   currentPage === startPage + index
-                    ? "bg-[#1C1C1C0D] "
-                    : "hover:bg-[#1C1C1C08] duration-200 hover:ease-in ease-out transition-all"
+                    ? "bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] "
+                    : "hover:bg-[#1C1C1C08] dark:hover:bg-tertiary-dark duration-200 hover-transition"
                 }`}
               >
                 {startPage + index}
@@ -107,10 +101,10 @@ function Pagination({
               <div className="mx-2 flex items-center justify-center">...</div>
               <button
                 onClick={() => handlePageBtn(totalPages)}
-                className={`text-sm text-primary-dark leading-[20px] tracking-0 w-7 h-7 rounded-[8px] ${
+                className={`text-sm text-primary-dark dark:text-primary-light leading-[20px] tracking-0 w-7 h-7 rounded-[8px] ${
                   currentPage === totalPages
-                    ? "bg-[#1C1C1C0D] "
-                    : "hover:bg-[#1C1C1C08] duration-200 hover:ease-in ease-out transition-all"
+                    ? "bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] "
+                    : "hover:bg-[#1C1C1C08] dark:hover:bg-tertiary-dark duration-200 hover-transition"
                 }`}
               >
                 {totalPages}
@@ -122,13 +116,13 @@ function Pagination({
         {/* ----------next button ------- */}
 
         <button
-          className="p-1 hover:bg-[#1C1C1C08] rounded-[8px] duration-200 hover:ease-in ease-out transition-all"
+          className="p-1 hover:bg-[#1C1C1C08] dark:hover:bg-tertiary-dark rounded-[8px] duration-200 hover-transition"
           onClick={handleNextRange}
           disabled={currentPage === totalPages}
         >
           <img
             className="w-5 h-5 rotate-180"
-            src="/icons/chevronLeft.svg"
+            src={theme === THEMES.LIGHT ? "/icons/chevronLeft.svg" : "/icons/darkTheme/chevronLeft.svg"}
             alt=""
           />
         </button>
