@@ -21,23 +21,28 @@ const Pages = ({
   const pathname = useLocation().pathname;
   const [accordionValue, setAccordionValue] = useState("");
 
-  const handleItemClick = useCallback((item) => {
-    setActiveItem(item.name);
-    addToRecentItems(item.href);
-    navigate(item.href);
-  }, [setActiveItem, addToRecentItems, navigate]);
+  const handleItemClick = useCallback(
+    (item) => {
+      setActiveItem(item.name);
+      addToRecentItems(item.href);
+      navigate(item.href);
+    },
+    [setActiveItem, addToRecentItems, navigate]
+  );
 
   useEffect(() => {
     if (pathname.includes("/pages")) {
       setActiveComponent(SIDEBAR_COMPONENTS.PAGES);
 
-      const matchingItem = pagesItems.find((item) => 
-        pathname === item.href || pathname.startsWith(item.href + "/")
+      const matchingItem = pagesItems.find(
+        (item) => pathname === item.href || pathname.startsWith(item.href + "/")
       );
-      
+
       if (matchingItem) {
         setActiveItem(matchingItem.name);
-        const itemIndex = pagesItems.findIndex((item) => item.name === matchingItem.name);
+        const itemIndex = pagesItems.findIndex(
+          (item) => item.name === matchingItem.name
+        );
         if (itemIndex !== -1 && matchingItem.hasSubRoutes) {
           setAccordionValue(`item-${itemIndex}`);
         }
@@ -52,7 +57,13 @@ const Pages = ({
           {isLeftSidebarOpen ? (
             <p>Pages</p>
           ) : (
-            <img className="shrink-0 w-5 h-5" src={`/icons/${theme === THEMES.LIGHT ? "pages" : "darkTheme/pages"}.svg`} alt="" />
+            <img
+              className="shrink-0 w-5 h-5"
+              src={`/icons/${
+                theme === THEMES.LIGHT ? "pages" : "darkTheme/pages"
+              }.svg`}
+              alt=""
+            />
           )}
         </div>
         <div className="flex flex-col gap-1 relative">
@@ -66,11 +77,16 @@ const Pages = ({
             {pagesItems.map((item, index) => (
               <>
                 {item.hasSubRoutes ? (
-                  <AccordionItem className="border-0!" value={`item-${index}`}>
+                  <AccordionItem
+                    key={item.href}
+                    className="border-0!"
+                    value={`item-${index}`}
+                  >
                     <AccordionTrigger
                       className={cn(
                         "border-0! px-2! py-1! hover:outline-0! focus:outline-0! hover-transition justify-start font-normal!",
-                        activeItem === item.name && activeComponent === SIDEBAR_COMPONENTS.PAGES
+                        activeItem === item.name &&
+                          activeComponent === SIDEBAR_COMPONENTS.PAGES
                           ? "bg-[#F5F5F5] dark:bg-[#FFFFFF1A]"
                           : "hover:bg-[#F5F5F5]/50 dark:hover:bg-tertiary-dark"
                       )}
@@ -115,7 +131,7 @@ const Pages = ({
                       <div className="flex flex-col gap-1 py-1">
                         {item.subRoutes.map((subRoute) => (
                           <button
-                            key={subRoute.href}
+                            key={subRoute.name}
                             className="text-left text-sm text-primary-dark hover:bg-[#F5F5F5] dark:text-primary-light dark:hover:bg-tertiary-dark rounded-[8px] px-2 py-1 hover-transition"
                           >
                             {!isLeftSidebarOpen ? (

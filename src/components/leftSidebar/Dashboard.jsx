@@ -174,7 +174,7 @@ const Dashboard = ({
                       <div className="flex flex-col gap-1 py-1">
                         {item.subRoutes.map((subRoute) => (
                           <button
-                            key={subRoute.href}
+                            key={subRoute.name}
                             className="text-left text-sm text-primary-dark hover:bg-[#F5F5F5] dark:text-primary-light dark:hover:bg-tertiary-dark rounded-[8px] px-2 py-1 hover-transition"
                           >
                             {!isLeftSidebarOpen ? (

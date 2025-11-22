@@ -38,15 +38,15 @@ export const dashboardItems = [
     hasSubRoutes: true,
     subRoutes: [
       {
-        href: "/example1",
+        href: "/dashboard/ecommerce",
         name: "example1",
         label: "Example1",
         icon: "eCommerce",
       },
       {
-        href: "/example1",
-        name: "example1",
-        label: "Example1",
+        href: "/dashboard/ecommerce",
+        name: "example2",
+        label: "Example2",
         icon: "eCommerce",
       },
     ],
@@ -66,8 +66,8 @@ export const dashboardItems = [
       },
       {
         href: "/dashboard/projects",
-        name: "example1",
-        label: "Example1",
+        name: "example2",
+        label: "Example2",
         icon: "projects",
       },
     ],
@@ -87,8 +87,8 @@ export const dashboardItems = [
       },
       {
         href: "/dashboard/online-courses",
-        name: "example1",
-        label: "Example1",
+        name: "example2",
+        label: "Example2",
         icon: "onlineCourses",
       },
     ],
