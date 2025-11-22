@@ -67,7 +67,9 @@ export const AppProvider = ({ children }) => {
       const width = window.innerWidth;
 
       if (width < 1024) {
-        setIsRightSidebarOpen(false);
+        if (isRightSidebarOpen) {
+          setIsRightSidebarOpen(false);
+        }
       }
     };
 

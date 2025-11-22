@@ -187,20 +187,6 @@ const ProductList = ({ productList }) => {
                 {isTablet && <td className="py-2 px-3 align-middle">{product.address}</td>}
                 {isDesktop && <td className="py-2 px-3 align-middle">{product.date}</td>}
                 <td className="py-2 px-3 align-middle">
-                  <span className="flex items-center gap-1 ">
-                    <img
-                      src={
-                        theme === THEMES.LIGHT
-                          ? "/icons/calendar.svg"
-                          : "/icons/darkTheme/calendar.svg"
-                      }
-                      alt=""
-                      className="w-4 h-4"
-                    />
-                    {product.date}
-                  </span>
-                </td>
-                <td className="py-2 px-3 align-middle">
                   <div className="flex items-center gap-1">
                     <div className="w-4 h-4 flex justify-center items-center">
                       <div
