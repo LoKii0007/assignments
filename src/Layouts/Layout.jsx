@@ -10,51 +10,43 @@ const Layout = () => {
   const { isRightSidebarOpen, isLeftSidebarOpen } = useAppContext();
   const { isSmall, isDesktop } = useWindow();
 
-  const getLeftSidebarClass = useCallback(
-    ( isOpen) => {
-      if (isSmall) {
-        if (isOpen) {
-          return `absolute w-[212px] translate-x-0`;
-        } else {
-          return `absolute w-[212px] -translate-x-full`;
-        }
+  const getLeftSidebarClass = useCallback(() => {
+    if (isSmall) {
+      if (isLeftSidebarOpen) {
+        return `absolute w-[212px] translate-x-0`;
       } else {
-        if (isOpen) {
-          return `relative w-[212px]`;
-        } else {
-          return `relative w-[88px]`;
-        }
+        return `absolute w-[212px] -translate-x-full`;
       }
-    },
-    [ isLeftSidebarOpen]
-  );
+    } else {
+      if (isLeftSidebarOpen) {
+        return `relative w-[212px]`;
+      } else {
+        return `relative w-[88px]`;
+      }
+    }
+  }, [isLeftSidebarOpen, isSmall]);
 
-  const getRightSidebarClass = useCallback(
-    ( isOpen) => {
-      if (!isDesktop) {
-        if (isOpen) {
-          return `absolute w-[280px] translate-x-0 `;
-        } else {
-          return `absolute w-[280px] translate-x-full`;
-        }
+  const getRightSidebarClass = useCallback(() => {
+    if (!isDesktop) {
+      if (isRightSidebarOpen) {
+        return `absolute w-[280px] translate-x-0 `;
       } else {
-        if (isOpen) {
-          return `relative w-[280px]`;
-        } else {
-          return `relative w-0`;
-        }
+        return `absolute w-[280px] translate-x-full`;
       }
-    },
-    [ isRightSidebarOpen, isDesktop]
-  );
+    } else {
+      if (isRightSidebarOpen) {
+        return `relative w-[280px]`;
+      } else {
+        return `relative w-0`;
+      }
+    }
+  }, [isRightSidebarOpen, isDesktop]);
 
   return (
     <>
       <div className="layout w-screen h-screen flex bg-primary-light dark:bg-primary-dark relative overflow-x-hidden transition-all duration-300">
         <div
-          className={` h-full flex shrink-0 overflow-y-auto custom-scrollbar transition-all duration-300 left-0 top-0 bg-primary-light dark:bg-primary-dark z-40 ${getLeftSidebarClass(
-            isLeftSidebarOpen
-          )}`}
+          className={` h-full flex shrink-0 overflow-y-auto custom-scrollbar transition-all duration-300 left-0 top-0 bg-primary-light dark:bg-primary-dark z-40 ${getLeftSidebarClass()}`}
         >
           <Sidebar />
         </div>
@@ -67,9 +59,7 @@ const Layout = () => {
           </div>
         </div>
         <div
-          className={`h-full flex shrink-0 overflow-y-auto custom-scrollbar transition-all right-0 duration-300 top-0  bg-primary-light dark:bg-primary-dark z-40 ${getRightSidebarClass(
-            isRightSidebarOpen
-          )}`}
+          className={`h-full flex shrink-0 overflow-y-auto custom-scrollbar transition-all right-0 duration-300 top-0  bg-primary-light dark:bg-primary-dark z-40 ${getRightSidebarClass()}`}
         >
           <RightSidebar />
         </div>

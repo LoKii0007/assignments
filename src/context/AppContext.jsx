@@ -15,8 +15,12 @@ export const AppProvider = ({ children }) => {
     "/pages/corporate",
   ]);
   const [theme, setTheme] = useState(THEMES.LIGHT);
-  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(window.innerWidth > 1024 ? true : false);
-  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(window.innerWidth > 1024 ? true : false);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(
+    window.innerWidth > 1024 ? true : false
+  );
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(
+    window.innerWidth > 1024 ? true : false
+  );
   const { isSmall: isSmallWindow } = useWindow();
 
   const addToRecentItems = (path) => {
@@ -30,14 +34,14 @@ export const AppProvider = ({ children }) => {
     setTheme((prev) => (prev === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT));
   };
 
-  const toggleLeftSidebar =() => {
+  const toggleLeftSidebar = () => {
     setIsLeftSidebarOpen((prev) => {
       if (isSmallWindow) {
         setIsRightSidebarOpen(false);
       }
       return !prev;
     });
-  }
+  };
 
   const toggleRightSidebar = () => {
     setIsRightSidebarOpen((prev) => {
@@ -46,7 +50,8 @@ export const AppProvider = ({ children }) => {
       }
       return !prev;
     });
-  }
+  };
+
   useEffect(() => {
     const root = document.documentElement;
 
@@ -56,6 +61,22 @@ export const AppProvider = ({ children }) => {
       root.classList.remove("dark");
     }
   }, [theme]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      if (width < 1024) {
+        setIsRightSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <>
