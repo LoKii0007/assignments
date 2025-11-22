@@ -1,6 +1,4 @@
 import React from "react";
-import { useAppContext } from "@/context/AppContext";
-import { THEMES } from "@/utils/constants";
 
 const sampleProducts = [
   {
@@ -36,7 +34,6 @@ const sampleProducts = [
 ];
 
 const ProductList = () => {
-  const { theme } = useAppContext();
   return (
     <div className="bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] space-y-1 font-[Inter] w-full overflow-x-auto">
       <h3 className="text-sm font-semibold text-primary-dark leading-[20px] tracking-0 dark:text-primary-light">
@@ -66,4 +63,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default React.memo(ProductList);

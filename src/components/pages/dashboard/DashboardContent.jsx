@@ -3,7 +3,6 @@ import InfoCard from "@/components/common/InfoCard";
 import DoubleBarChart from "@/components/charts/DoubleBarChart";
 import ProductList from "./ProductList";
 import Chart from "@/components/charts/LineChart";
-// import WorldMap from "@/components/charts/WorldMap";
 import { THEMES } from "@/utils/constants";
 import { useAppContext } from "@/context/AppContext";
 import useWindow from "@/hooks/useWindow";
@@ -78,11 +77,9 @@ const infoData = [
 const DashboardContent = () => {
   const { theme } = useAppContext();
   const mainPageRef = useRef(null);
-  const { isDesktop, isTablet, isMobile, isSmall, isLargeDesktop } = useWindow({
+  const { isDesktop, isTablet } = useWindow({
     ref: mainPageRef,
   });
-
-  
 
   return (
     <main
@@ -100,7 +97,7 @@ const DashboardContent = () => {
         {/* Stats Cards Row */}
         <div
           className={`grid ${
-            isTablet || isMobile || isSmall ? "col-span-4" : "col-span-2"
+            !isTablet ? "col-span-4" : "col-span-2"
           } grid-cols-2 gap-4 sm:gap-7`}
         >
           {/* Customers Card */}
@@ -121,7 +118,7 @@ const DashboardContent = () => {
         {/* Charts Row */}
         <div
           className={`grid grid-cols-2 ${
-            isTablet || isMobile || isSmall ? "col-span-4" : "col-span-2"
+            !isTablet ? "col-span-4" : "col-span-2"
           } min-h-[252px]`}
         >
           {/* Projections vs Actuals Chart */}
@@ -208,7 +205,7 @@ const DashboardContent = () => {
         </div>
 
         {/* Top Selling Products Table */}
-        {(isDesktop || isLargeDesktop) && (
+        {isDesktop && (
           <div className=" col-span-3">
             <ProductList />
           </div>
@@ -217,14 +214,17 @@ const DashboardContent = () => {
         {/* Total Sales Donut Chart */}
         <div
           className={` ${
-            (isDesktop || isLargeDesktop) ? "col-span-1" : "xxs:col-span-2 col-span-4"
+            isDesktop ? "col-span-1" : "xxs:col-span-2 col-span-4"
           } bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] space-y-4 flex flex-col font-[Inter] max-h-[400px]`}
         >
           <h3 className="text-sm font-semibold text-primary-dark leading-[20px] tracking-0 shrink-0 dark:text-primary-light">
             Total Sales
           </h3>
           <div className="flex justify-center relative flex-1 min-h-[120px] min-w-[120px]">
-            <DonutChart data={sampleSalesData} borderColor={theme === THEMES.LIGHT ? "#F7F9FB" : "#282828"} />
+            <DonutChart
+              data={sampleSalesData}
+              borderColor={theme === THEMES.LIGHT ? "#F7F9FB" : "#282828"}
+            />
           </div>
           <div className="space-y-3">
             {sampleSalesData.map((item, idx) => (
@@ -250,7 +250,7 @@ const DashboardContent = () => {
           </div>
         </div>
 
-        {!(isDesktop || isLargeDesktop) && (
+        {!isDesktop && (
           <div className="col-span-4">
             <ProductList />
           </div>
@@ -260,4 +260,4 @@ const DashboardContent = () => {
   );
 };
 
-export default DashboardContent;
+export default React.memo(DashboardContent);

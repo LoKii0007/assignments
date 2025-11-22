@@ -15,15 +15,15 @@ function App() {
             <Route path="/dashboard" element={<Layout />}>
               <Route path="default" element={<Home />} />
               <Route path="ecommerce" element={<Home />} />
-              <Route path="projects" element={<Products />} />
+              <Route path="projects" element={<Home />} />
               <Route path="online-courses" element={<Home />} />
             </Route>
             <Route path="/pages" element={<Layout />}>
-              <Route path="user-profile" element={<Home />} />
-              <Route path="account" element={<Home />} />
-              <Route path="corporate" element={<Home />} />
-              <Route path="blog" element={<Home />} />
-              <Route path="social" element={<Home />} />
+              <Route path="user-profile" element={<Products />} />
+              <Route path="account" element={<Products />} />
+              <Route path="corporate" element={<Products />} />
+              <Route path="blog" element={<Products />} />
+              <Route path="social" element={<Products />} />
             </Route>
           </Routes>
         </AppProvider>

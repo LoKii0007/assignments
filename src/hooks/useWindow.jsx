@@ -17,8 +17,8 @@ const useWindow = ({ ref } = {}) => {
 
     return {
       isSmall: width < breakpoints.small,
-      isMobile: width >= breakpoints.small && width < breakpoints.mobile,
-      isTablet: width >= breakpoints.mobile && width < breakpoints.tablet,
+      isMobile: width >= breakpoints.small,
+      isTablet: width >= breakpoints.mobile,
       isDesktop: width >= breakpoints.tablet,
       isLargeDesktop: width >= breakpoints.largeDesktop,
     };
@@ -29,21 +29,19 @@ const useWindow = ({ ref } = {}) => {
   useEffect(() => {
     const update = () => setScreen(getSizes());
 
-    /* ✅ ADDED: ResizeObserver for ref-based resize detection */
     if (ref?.current) {
       const observer = new ResizeObserver(() => {
-        update(); // 🔥 triggers when ref size changes instead of window only
+        update();
       });
 
       observer.observe(ref.current);
 
-      return () => observer.disconnect(); // ✅ ADDED: cleanup for observer
+      return () => observer.disconnect();
     }
 
-    /* ✅ CHANGED: window resize only used when no ref is passed */
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
-  }, [ref]); // ✅ CHANGED: ref added to dependency array
+  }, [ref]);
 
   return screen;
 };

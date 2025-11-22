@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { useAppContext } from "@/context/AppContext";
 import { THEMES } from "@/utils/constants";
@@ -18,22 +18,22 @@ function Pagination({
   const maxVisiblePages = 5;
   const { theme } = useAppContext();
 
-  const handlePageBtn = (page) => {
+  const handlePageBtn = useCallback((page) => {
     setCurrentPage(page);
     loadNextPage(page);
-  };
+  }, [setCurrentPage, loadNextPage]);
 
-  const handlePrevRange = () => {
+  const handlePrevRange = useCallback(() => {
     if (currentPage > 1) {
       loadNextPage(currentPage - 1);
     }
-  };
+  }, [currentPage, loadNextPage]);
 
-  const handleNextRange = () => {
+  const handleNextRange = useCallback(() => {
     if (currentPage < totalPages) {
       loadNextPage(currentPage + 1);
     }
-  };
+  }, [currentPage, totalPages, loadNextPage]);
 
   useEffect(() => {
     const computedPages = Math.max(
@@ -131,4 +131,4 @@ function Pagination({
   );
 }
 
-export default Pagination;
+export default React.memo(Pagination);

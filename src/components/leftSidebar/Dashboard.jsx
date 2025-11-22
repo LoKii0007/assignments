@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import React, { useState, useRef, useLayoutEffect, useEffect } from "react";
+import React, { useState, useRef, useLayoutEffect, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_COMPONENTS, THEMES, dashboardItems } from "@/utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -25,29 +25,29 @@ const Dashboard = ({
   const { addToRecentItems, theme, isLeftSidebarOpen } = useAppContext();
   const pathname = useLocation().pathname;
 
-  const handleItemClick = (item, index) => {
+  const handleItemClick = useCallback((item, index) => {
     setActiveItem(item.name);
     setActiveIndex(index);
     addToRecentItems(item.href);
     navigate(item.href);
-  };
+  }, [setActiveItem, setActiveIndex, addToRecentItems, navigate]);
 
-  const handleItemMouseEnter = (index) => {
+  const handleItemMouseEnter = useCallback((index) => {
     setActiveIndex(index);
-  };
+  }, [setActiveIndex]);
 
-  const handleItemMouseLeave = () => {
+  const handleItemMouseLeave = useCallback(() => {
     const index = dashboardItems.findIndex((item) => item.name === activeItem);
     setActiveIndex(index);
-  };
+  }, [activeItem, setActiveIndex]);
 
-  const updatePillPosition = () => {
+  const updatePillPosition = useCallback(() => {
     if (itemsRef.current[activeIndex] && parentRef.current) {
       const itemRect = itemsRef.current[activeIndex].getBoundingClientRect();
       const parentRect = parentRef.current.getBoundingClientRect();
       setPillTop(itemRect.top - parentRect.top);
     }
-  };
+  }, [activeIndex, itemsRef, parentRef]);
 
   useLayoutEffect(() => {
     updatePillPosition();
@@ -117,6 +117,7 @@ const Dashboard = ({
                     className="border-0!"
                     value={`item-${index}`}
                     ref={(el) => (itemsRef.current[index] = el)}
+                    key={index}
                   >
                     <AccordionTrigger
                       className={cn(
@@ -236,4 +237,4 @@ const Dashboard = ({
   );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);

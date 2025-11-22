@@ -63,3 +63,34 @@ export const getStatusDarkBgColor = (status) => {
       return "#FFFFFF66";
   }
 };
+
+// ? Helper: Create SVG Path for the main Donut Arcs
+export const describeArc = (x, y, radius, startAngle, endAngle) => {
+  const start = polarToCartesian(x, y, radius, endAngle);
+  const end = polarToCartesian(x, y, radius, startAngle);
+  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+  return [
+    "M",
+    end.x,
+    end.y,
+    "A",
+    radius,
+    radius,
+    0,
+    largeArcFlag,
+    1,
+    start.x,
+    start.y,
+  ].join(" ");
+};
+
+// ? Helper: Convert polar coordinates to Cartesian
+
+export const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
+  return {
+    x: centerX + radius * Math.cos(angleInRadians),
+    y: centerY + radius * Math.sin(angleInRadians),
+  };
+};

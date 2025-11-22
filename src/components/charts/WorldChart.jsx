@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { AgCharts } from "ag-charts-react";
 import "ag-charts-enterprise";
 import { useAppContext } from "@/context/AppContext";
@@ -84,4 +84,4 @@ const WorldChart = () => {
   return <AgCharts options={options} />;
 };
 
-export default WorldChart;
+export default React.memo(WorldChart);

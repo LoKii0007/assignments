@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   RECENT_TABS,
   THEMES,
@@ -21,11 +21,11 @@ const MenuItem = ({ item, isPath = false, isLeftSidebarOpen }) => {
         .replace(/\b\w/g, (l) => l.toUpperCase())
     : item.label;
 
-  const handleClick = (e) => {
+  const handleClick = useCallback((e) => {
     e.preventDefault();
     addToRecentItems(href);
     navigate(href);
-  };
+  }, [addToRecentItems, navigate, href]);
 
   const getIcon = () => {
     if (item.includes("dashboard")) {
@@ -76,9 +76,9 @@ const RecentTab = ({
   isLeftSidebarOpen,
   icon,
 }) => {
-  const handleTabClick = () => {
+  const handleTabClick = useCallback(() => {
     setActiveTab(value);
-  };
+  }, [setActiveTab, value]);
 
   return (
     <>
@@ -178,4 +178,4 @@ const Recent = () => {
   );
 };
 
-export default Recent;
+export default React.memo(Recent);

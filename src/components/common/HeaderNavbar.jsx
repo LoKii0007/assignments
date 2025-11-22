@@ -47,20 +47,19 @@ const HeaderNavbar = () => {
   return (
     <header
       ref={mainPageRef}
-      className=" dark:bg-primary-dark font-[Inter] leading-[20px] tracking-0 border-b border-[#1C1C1C1A] dark:border-tertiary-dark px-4 sm:px-7 sm:py-5 py-4 flex flex-col gap-3 w-full"
+      className=" dark:bg-primary-dark transition-all duration-300 font-[Inter] leading-[20px] tracking-0 border-b border-[#1C1C1C1A] dark:border-tertiary-dark px-4 sm:px-7 sm:py-5 py-4 flex flex-col gap-3 w-full"
     >
       {isSmall && (
         <div className="flex items-center justify-between gap-5">
-          <div className="flex items-center space-x-2 text-sm">
+          <div className="flex items-center space-x-2 text-sm breadcrumb-section ">
             {pathSegments.map((segment, index) => (
-              <div className="space-x-2">
+              <div className="space-x-2" key={index}>
                 <>
                   <span
-                    key={index}
                     className={`capitalize ${
                       index === pathSegments.length - 1
                         ? "text-primary-dark dark:text-primary-light"
-                        : "text-[#1C1C1C66]  dark:text-secondary-dark"
+                        : "text-[#1C1C1C66] dark:text-secondary-dark"
                     }`}
                   >
                     {segment}
@@ -74,7 +73,7 @@ const HeaderNavbar = () => {
               </div>
             ))}
           </div>
-          <div className="relative flex items-center">
+          <div className="relative flex items-center search-box ml-auto">
             <img
               className="w-4 h-4 absolute left-2"
               src={`/icons/${
@@ -85,9 +84,10 @@ const HeaderNavbar = () => {
             <input
               type="text"
               placeholder="Search"
-              className="px-2 py-1 ps-7 bg-[#F3F3F3] dark:bg-tertiary-dark text-[#1C1C1C33] dark:text-primary-light/20 rounded-[8px] text-sm w-40 focus:outline-none focus:ring-1 focus:ring-[#1C1C1C]"
+              className="px-2 py-1 ps-7 peer bg-[#F3F3F3] dark:bg-tertiary-dark text-[#1C1C1C33] dark:text-primary-light/20 rounded-[8px] text-sm
+       w-40 focus:outline-none focus:ring-1 focus:ring-[#1C1C1C] ml-auto"
             />
-            <span className="absolute right-2 text-[#1C1C1C33] dark:text-primary-light/20">
+            <span className="absolute right-2 text-[#1C1C1C33] dark:text-primary-light/20 pointer-events-none">
               ⌘/
             </span>
           </div>
@@ -97,10 +97,10 @@ const HeaderNavbar = () => {
         <div className="flex items-center space-x-2">
           <button
             onClick={toggleLeftSidebar}
-            className="hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition"
+            className="hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition group"
           >
             <img
-              className="sm:w-7 sm:h-7 w-6 h-6"
+              className="sm:w-7 sm:h-7 w-6 h-6 group-active:scale-90 transition-all duration-300 ease-in-out"
               src={`/icons/${
                 theme === THEMES.LIGHT ? "menu.svg" : "/darkTheme/menu.svg"
               }`}
@@ -109,9 +109,9 @@ const HeaderNavbar = () => {
           </button>
           <button
             onClick={handleFavouriteClick}
-            className="hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition"
+            className="hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition group"
           >
-            <img className="sm:w-7 sm:h-7 w-6 h-6" src={getFavIcon()} alt="" />
+            <img className="sm:w-7 sm:h-7 w-6 h-6 group-active:scale-90 transition-all duration-300 ease-in-out" src={getFavIcon()} alt="" />
           </button>
 
           {!isSmall && (
@@ -156,7 +156,7 @@ const HeaderNavbar = () => {
               <input
                 type="text"
                 placeholder="Search"
-                className="px-2 py-1 ps-7 bg-[#F3F3F3] dark:bg-tertiary-dark text-[#1C1C1C33] dark:text-primary-light/20 rounded-[8px] text-sm w-40 focus:outline-none focus:ring-1 focus:ring-[#1C1C1C]"
+                className="px-2 py-1 ps-7 bg-[#F3F3F3] sm:focus:w-60 transition-all duration-300 ease-out dark:bg-tertiary-dark text-[#1C1C1C33] dark:text-primary-light/20 rounded-[8px] text-sm w-40 focus:outline-none focus:ring-1 focus:ring-[#1C1C1C]"
               />
               <span className="absolute right-2 text-[#1C1C1C33] dark:text-primary-light/20">
                 ⌘/
@@ -166,19 +166,20 @@ const HeaderNavbar = () => {
           <div className="flex items-center space-x-2">
             <button
               onClick={toggleTheme}
-              className=" hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition"
+              className=" hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition group"
             >
               <img
-                className="sm:w-7 sm:h-7 w-6 h-6"
+                className="sm:w-7 sm:h-7 w-6 h-6 group-hover:rotate-45 group-active:scale-90 transition-all duration-300 ease-in-out"
                 src={`/icons/${
                   theme === THEMES.LIGHT ? "sun.svg" : "/darkTheme/sun.svg"
                 }`}
                 alt=""
               />
             </button>
-            <button className=" hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition">
+
+            <button className=" hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition group">
               <img
-                className="sm:w-7 sm:h-7 w-6 h-6"
+                className="sm:w-7 sm:h-7 w-6 h-6 group-hover:-rotate-360 group-active:scale-90 transition-all duration-300 ease-in-out"
                 src={`/icons/${
                   theme === THEMES.LIGHT
                     ? "anticlock.svg"
@@ -187,9 +188,10 @@ const HeaderNavbar = () => {
                 alt=""
               />
             </button>
-            <button className=" hover:bg-[#F3F3F3] rounded-[8px] relative dark:hover:bg-tertiary-dark hover-transition">
+
+            <button className=" hover:bg-[#F3F3F3] rounded-[8px] relative dark:hover:bg-tertiary-dark hover-transition group">
               <img
-                className="sm:w-7 sm:h-7 w-6 h-6"
+                className="sm:w-7 sm:h-7 w-6 h-6 group-active:scale-90 transition-all duration-300 ease-in-out"
                 src={`/icons/${
                   theme === THEMES.LIGHT ? "bell.svg" : "/darkTheme/bell.svg"
                 }`}
@@ -198,10 +200,10 @@ const HeaderNavbar = () => {
             </button>
             <button
               onClick={toggleRightSidebar}
-              className=" hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition"
+              className=" hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition group"
             >
               <img
-                className="sm:w-7 sm:h-7 w-6 h-6"
+                className="sm:w-7 sm:h-7 w-6 h-6 group-active:scale-90 transition-all duration-300 ease-in-out"
                 src={`/icons/${
                   theme === THEMES.LIGHT ? "menu.svg" : "/darkTheme/menu.svg"
                 }`}
@@ -215,4 +217,4 @@ const HeaderNavbar = () => {
   );
 };
 
-export default HeaderNavbar;
+export default React.memo(HeaderNavbar);

@@ -135,11 +135,11 @@ const Products = () => {
         </h1>
         <div className="flex flex-col gap-3">
           {/* //?filters */}
-          <div className="filter-section w-full p-2 gap-4 bg-[#F7F9FB] dark:bg-[#FFFFFF0D] flex justify-between items-center rounded-[8px]">
+          <div className="filter-section w-full sm:p-2 p-1 gap-4 bg-[#F7F9FB] dark:bg-[#FFFFFF0D] flex justify-between items-center rounded-[8px]">
             <div className="flex items-center gap-2">
-              <button className="p-1 hover:bg-[#E5ECF6] rounded-[4px] dark:hover:bg-tertiary-dark hover-transition">
+              <button className="p-1 hover:bg-[#E5ECF6] rounded-[4px] dark:hover:bg-tertiary-dark hover-transition group">
                 <img
-                  className="h-5 w-5"
+                  className="sm:h-5 sm:w-5 h-4 w-4 group-active:scale-90 transition-all duration-300 ease-in-out"
                   src={
                     theme === THEMES.LIGHT
                       ? "/icons/plus.svg"
@@ -155,10 +155,10 @@ const Products = () => {
               />
               <button
                 onClick={() => handleSortToggle()}
-                className="p-1 hover:bg-[#E5ECF6] rounded-[4px] dark:hover:bg-tertiary-dark hover-transition"
+                className="p-1 hover:bg-[#E5ECF6] rounded-[4px] dark:hover:bg-tertiary-dark hover-transition group"
               >
                 <img
-                  className="h-5 w-5"
+                  className="sm:h-5 sm:w-5 h-4 w-4 group-active:scale-90 transition-all duration-300 ease-in-out"
                   src={
                     theme === THEMES.LIGHT
                       ? "/icons/updown.svg"
@@ -183,7 +183,7 @@ const Products = () => {
                 placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="px-2 py-1 ps-7 border border-[#1C1C1C1A] dark:border-[#FFFFFF1A] bg-[#FFFFFF66] dark:bg-[#1C1C1C66] dark:text-[#FFFFFF33] text-[#1C1C1C33] rounded-[8px] text-sm w-40 focus:outline-none focus:ring-1 focus:ring-[#1C1C1C]"
+                className="px-2 py-1 ps-7 border border-[#1C1C1C1A] transition-all duration-300 ease-out dark:border-[#FFFFFF1A] bg-[#FFFFFF66] dark:bg-[#1C1C1C66] dark:text-[#FFFFFF33] text-[#1C1C1C33] rounded-[8px] text-sm w-40 focus:w-48 sm:focus:w-60 focus:outline-none focus:ring-1 focus:ring-[#1C1C1C]"
               />
             </div>
           </div>

@@ -11,6 +11,7 @@ import {
 import { getRoundedMax } from "../../utils/helpers";
 import { useAppContext } from "@/context/AppContext";
 import { THEMES } from "@/utils/constants";
+import React from "react";
 
 const sampleData = [
   { month: "Jan", projection: 10000000, actual: 15000000 },
@@ -62,7 +63,6 @@ const Chart = () => {
 
           <ResponsiveContainer width="90%" height="100%" className="">
             <ComposedChart data={sampleData}>
-              
               {/* Radial Gradient for the projection area */}
               <defs>
                 <radialGradient id="radialProjection" cx="50%" cy="0%" r="70%">
@@ -81,10 +81,10 @@ const Chart = () => {
               <Area
                 type="natural"
                 dataKey="projection"
-                data={sampleData.slice(0, 4)} 
-                strokeWidth={0} 
+                data={sampleData.slice(0, 4)}
+                strokeWidth={0}
                 stroke="none"
-                fill="url(#radialProjection)" 
+                fill="url(#radialProjection)"
                 activeDot={false}
               />
 
@@ -120,17 +120,41 @@ const Chart = () => {
 
               <Tooltip
                 cursor={{ stroke: "#ccc", strokeDasharray: "3 3" }}
-                contentStyle={{
-                  backgroundColor: "white",
-                  borderRadius: 8,
-                  border: "1px solid #eee",
-                  fontSize: 12,
-                  fontWeight: 400,
-                  fontFamily: "Inter",
-                  color: "#1C1C1C",
-                  padding: 10,
-                  boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
-                  zIndex: 1000,
+                content={({ active, payload, label }) => {
+                  if (!active || !payload) return null;
+
+                  const uniquePayload = Object.values(
+                    payload.reduce((acc, item) => {
+                      acc[item.dataKey] = item;
+                      return acc;
+                    }, {})
+                  );
+
+                  return (
+                    <div
+                      style={{
+                        backgroundColor: "white",
+                        borderRadius: 8,
+                        border: "1px solid #eee",
+                        fontSize: 12,
+                        fontWeight: 400,
+                        fontFamily: "Inter",
+                        color: "#1C1C1C",
+                        padding: 10,
+                        boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+                      }}
+                    >
+                      <strong className="text-center w-full block">
+                        {label}
+                      </strong>
+                      {uniquePayload.map((entry) => (
+                        <div key={entry.dataKey} className="flex justify-between gap-3 capitalize">
+                          <div>{entry.name || entry.dataKey}</div>{" "}
+                          <div className="">{entry.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  );
                 }}
               />
             </ComposedChart>
@@ -153,4 +177,4 @@ const Chart = () => {
   );
 };
 
-export default Chart;
+export default React.memo(Chart);

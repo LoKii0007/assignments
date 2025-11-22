@@ -1,38 +1,8 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { THEMES } from "@/utils/constants";
-
-// ? Helper: Convert polar coordinates to Cartesian
-
-const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
-  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
-  return {
-    x: centerX + radius * Math.cos(angleInRadians),
-    y: centerY + radius * Math.sin(angleInRadians),
-  };
-};
-
-// ? Helper: Create SVG Path for the main Donut Arcs
-
-const describeArc = (x, y, radius, startAngle, endAngle) => {
-  const start = polarToCartesian(x, y, radius, endAngle);
-  const end = polarToCartesian(x, y, radius, startAngle);
-  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-
-  return [
-    "M",
-    end.x,
-    end.y,
-    "A",
-    radius,
-    radius,
-    0,
-    largeArcFlag,
-    1,
-    start.x,
-    start.y,
-  ].join(" ");
-};
+import { describeArc, polarToCartesian } from "@/utils/helpers";  
 
 const DonutChart = ({
   data = [],
@@ -40,7 +10,6 @@ const DonutChart = ({
   borderWidth = 4,
   hoverOffset = 5,
   borderColor = "white",
-  TooltipComponent,
 }) => {
   // --- 1. Responsive Logic ---
   const containerRef = useRef(null);
@@ -255,4 +224,4 @@ const DonutChart = ({
   );
 };
 
-export default DonutChart;
+export default React.memo(DonutChart);

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback } from "react";
 import Sidebar from "@/components/leftSidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import RightSidebar from "@/components/RightSidebar";
@@ -8,12 +8,10 @@ import useWindow from "@/hooks/useWindow";
 
 const Layout = () => {
   const { isRightSidebarOpen, isLeftSidebarOpen } = useAppContext();
-  const { isSmall, isMobile, isDesktop } = useWindow();
-  const mainRef = useRef(null);
-  const { isTablet } = useWindow({ ref: mainRef });
+  const { isSmall, isDesktop } = useWindow();
 
   const getLeftSidebarClass = useCallback(
-    (isSmall, isOpen) => {
+    ( isOpen) => {
       if (isSmall) {
         if (isOpen) {
           return `absolute w-[212px] translate-x-0`;
@@ -28,11 +26,11 @@ const Layout = () => {
         }
       }
     },
-    [isSmall, isLeftSidebarOpen]
+    [ isLeftSidebarOpen]
   );
 
   const getRightSidebarClass = useCallback(
-    (isSmall, isOpen) => {
+    ( isOpen) => {
       if (!isDesktop) {
         if (isOpen) {
           return `absolute w-[280px] translate-x-0 `;
@@ -47,15 +45,14 @@ const Layout = () => {
         }
       }
     },
-    [isSmall, isRightSidebarOpen, isDesktop]
+    [ isRightSidebarOpen, isDesktop]
   );
 
   return (
     <>
-      <div ref={mainRef} className="layout w-screen h-screen flex bg-primary-light dark:bg-primary-dark relative overflow-x-hidden">
+      <div className="layout w-screen h-screen flex bg-primary-light dark:bg-primary-dark relative overflow-x-hidden transition-all duration-300">
         <div
           className={` h-full flex shrink-0 overflow-y-auto custom-scrollbar transition-all duration-300 left-0 top-0 bg-primary-light dark:bg-primary-dark z-40 ${getLeftSidebarClass(
-            isSmall,
             isLeftSidebarOpen
           )}`}
         >
@@ -71,7 +68,6 @@ const Layout = () => {
         </div>
         <div
           className={`h-full flex shrink-0 overflow-y-auto custom-scrollbar transition-all right-0 duration-300 top-0  bg-primary-light dark:bg-primary-dark z-40 ${getRightSidebarClass(
-            isSmall,
             isRightSidebarOpen
           )}`}
         >
@@ -82,4 +78,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default React.memo(Layout);

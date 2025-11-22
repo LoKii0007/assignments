@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Dialog,
   DialogClose,
@@ -33,7 +33,7 @@ export function FilterDialog({
     setSelectedStatuses(new Set(initialSelectedStatuses));
   }, [initialSelectedStatuses]);
 
-  const toggleStatus = (status) => {
+  const toggleStatus = useCallback((status) => {
     setSelectedStatuses((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(status)) {
@@ -43,24 +43,24 @@ export function FilterDialog({
       }
       return newSet;
     });
-  };
+  }, [setSelectedStatuses]);
 
-  const handleApply = () => {
+  const handleApply = useCallback(() => {
     onApply(Array.from(selectedStatuses));
-  };
+  }, [selectedStatuses, onApply]);
 
-  const handleAllClick = () => {
+  const handleAllClick = useCallback(() => {
     if (selectedStatuses.size === STATUS_OPTIONS.length) {
       setSelectedStatuses(new Set());
     } else {
       setSelectedStatuses(new Set(STATUS_OPTIONS));
     }
-  };
+  }, [selectedStatuses]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setSelectedStatuses(new Set());
     onApply([]);
-  };
+  }, [setSelectedStatuses, onApply]);
 
   const isAllSelected = selectedStatuses.size === STATUS_OPTIONS.length;
 
@@ -68,12 +68,12 @@ export function FilterDialog({
     <Dialog className="">
       <DialogTrigger asChild>
         <button
-          className={`p-1 hover:bg-[#E5ECF6] rounded-[4px] dark:hover:bg-tertiary-dark hover-transition ${
+          className={`p-1 hover:bg-[#E5ECF6] rounded-[4px] dark:hover:bg-tertiary-dark hover-transition group ${
             isFilterApplied ? "bg-[#d7e4f8] dark:bg-secondary-dark/50" : ""
           }`}
         >
           <img
-            className="h-5 w-5"
+            className="sm:h-5 sm:w-5 h-4 w-4 group-active:scale-90 transition-all duration-300 ease-in-out"
             src={
               theme === THEMES.LIGHT
                 ? "/icons/funnel.svg"
@@ -152,3 +152,5 @@ export function FilterDialog({
     </Dialog>
   );
 }
+
+export default React.memo(FilterDialog);

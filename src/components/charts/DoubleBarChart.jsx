@@ -1,5 +1,6 @@
 import React from "react";
 import { getRoundedMax } from "../../utils/helpers";
+import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip";
 
 const sampleData = [
   {
@@ -62,35 +63,60 @@ const DoubleBarChart = () => {
               0
             </h6>
           </div>
-          <div className="shrink-0 opacity-0 text-xs text-[#1C1C1C66] dark:text-[#FFFFFF66] leading-[18px] tracking-0">
+          <div className="shrink-0 opacity-0 text-xs leading-[18px] tracking-0">
             30m
           </div>
         </div>
         <div className="grid grid-cols-6 h-full w-full">
-          {sampleData.map((item) => (
-            <div key={item.month} className="flex flex-col">
-              <div className="flex-1 flex justify-center relative border-b border-[#1C1C1C0D] dark:border-[#FFFFFF1A] mb-3">
-                <div
-                  style={{ height: `${(item.projection / roundedMax) * 100}%` }}
-                  className="bg-[#A8C5DA] z-20 w-5 absolute bottom-0 opacity-50 rounded-t-[4px]"
-                ></div>
-                <div
-                  style={{ height: `${(item.actual / roundedMax) * 100}%` }}
-                  className="bg-[#A8C5DA] z-10 w-5 absolute bottom-0"
-                ></div>
-                <div className="h-[1px] w-full bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] absolute top-0 left-0"></div>
-                <div className="h-[1px] w-full bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] absolute top-1/3 left-0"></div>
-                <div className="h-[1px] w-full bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] absolute top-2/3 left-0"></div>
+          {sampleData.map((item) => {
+            const maxHeightPercent =
+              (Math.max(item.projection, item.actual) / roundedMax) * 100;
+
+            return (
+              <div key={item.month} className="flex flex-col">
+                <div className="flex-1 flex justify-center relative border-b border-[#1C1C1C0D] dark:border-[#FFFFFF1A] mb-3">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div
+                        style={{ height: `${maxHeightPercent + 5}%` }}
+                        className="absolute bottom-0 left-0 w-full z-30"
+                      />
+                    </TooltipTrigger>
+
+                    <div
+                      style={{
+                        height: `${(item.projection / roundedMax) * 100}%`,
+                      }}
+                      className="bg-[#A8C5DA] z-20 w-5 absolute bottom-0 opacity-50 rounded-t-[4px]"
+                    />
+
+                    <div
+                      style={{ height: `${(item.actual / roundedMax) * 100}%` }}
+                      className="bg-[#A8C5DA] z-10 w-5 absolute bottom-0"
+                    />
+                    <TooltipContent className="bg-white dark:bg-primary-dark text-primary-dark dark:text-primary-light shadow-md dark:shadow-primary-dark/50">
+                      <div className="text-[10px] font-medium leading-[18px] tracking-0 flex justify-between gap-3 capitalize">
+                        <div>Projection</div> <div>{item.projection}</div>
+                      </div>
+                      <div className="text-[10px] font-medium leading-[18px] tracking-0 flex justify-between gap-3 capitalize">
+                        <div>Actual</div> <div>{item.actual}</div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                  <div className="h-[1px] w-full bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] absolute top-0 left-0"></div>
+                  <div className="h-[1px] w-full bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] absolute top-1/3 left-0"></div>
+                  <div className="h-[1px] w-full bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] absolute top-2/3 left-0"></div>
+                </div>
+                <div className="shrink-0 flex items-center justify-center text-xs text-[#1C1C1C66] dark:text-[#FFFFFF66] leading-[18px] tracking-0">
+                  {item.month}
+                </div>
               </div>
-              <div className="shrink-0 flex items-center justify-center text-xs text-[#1C1C1C66] dark:text-[#FFFFFF66] leading-[18px] tracking-0">
-                {item.month}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </>
   );
 };
 
-export default DoubleBarChart;
+export default React.memo(DoubleBarChart);

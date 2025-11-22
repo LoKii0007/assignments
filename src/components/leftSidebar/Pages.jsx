@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_COMPONENTS, THEMES, pagesItems } from "@/utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -21,11 +21,11 @@ const Pages = ({
   const pathname = useLocation().pathname;
   const [accordionValue, setAccordionValue] = useState("");
 
-  const handleItemClick = (item) => {
+  const handleItemClick = useCallback((item) => {
     setActiveItem(item.name);
     addToRecentItems(item.href);
     navigate(item.href);
-  };
+  }, [setActiveItem, addToRecentItems, navigate]);
 
   useEffect(() => {
     if (pathname.includes("/pages")) {
@@ -165,4 +165,4 @@ const Pages = ({
   );
 };
 
-export default Pages;
+export default React.memo(Pages);

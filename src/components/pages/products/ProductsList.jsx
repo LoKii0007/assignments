@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import Pagination from "../../common/Pagination";
 import { useAppContext } from "@/context/AppContext";
 import { THEMES } from "@/utils/constants";
@@ -8,6 +8,7 @@ import {
   getStatusDarkTextColor,
   getStatusDarkBgColor,
 } from "@/utils/helpers";
+import useWindow from "@/hooks/useWindow";
 
 const ProductList = ({ productList }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +22,10 @@ const ProductList = ({ productList }) => {
   const [checkedItems, setCheckedItems] = useState(new Set());
   const [isAllChecked, setIsAllChecked] = useState(false);
   const { theme } = useAppContext();
+  const containerRef = useRef(null);
+  const { isDesktop, isTablet, isMobile } = useWindow({
+    ref: containerRef,
+  });
 
   const getCheckboxImage = (isChecked) => {
     if (isChecked) {
@@ -95,14 +100,17 @@ const ProductList = ({ productList }) => {
   }, [checkedItems, paginatedProducts]);
 
   return (
-    <div className="flex flex-col font-[Inter] gap-3 overflow-x-auto custom-scrollbar">
+    <div
+      ref={containerRef}
+      className="flex flex-col font-[Inter] gap-3 overflow-x-auto custom-scrollbar"
+    >
       <table className="w-full ">
         <thead>
           <tr className="text-left border-b border-[#1C1C1C33] dark:border-[#FFFFFF33] text-xs text-[#1C1C1C66] dark:text-[#FFFFFF66] leading-[18px] tracking-0">
-            <th className="py-2 px-3 hidden sm:table-cell">
+            <th className="py-2 px-1 hidden sm:table-cell">
               <label
                 htmlFor="select-all-checkbox"
-                className="cursor-pointer"
+                className="cursor-pointer flex items-center justify-center w-4 h-4 group"
                 onClick={(e) => {
                   e.preventDefault();
                   handleSelectAll();
@@ -110,7 +118,7 @@ const ProductList = ({ productList }) => {
               >
                 <img
                   key={`select-all-${isAllChecked}-${theme}`}
-                  className="w-4 h-4"
+                  className="w-4 h-4 group-active:scale-90 transition-all duration-300 ease-in-out"
                   src={getCheckboxImage(isAllChecked)}
                   alt=""
                 />
@@ -124,10 +132,10 @@ const ProductList = ({ productList }) => {
               />
             </th>
             <th className="py-2 px-3">Order ID</th>
-            <th className="py-3 pe-3">User</th>
-            <th className="py-2 px-3 hidden sm:table-cell">Project</th>
-            <th className="py-2 px-3 hidden md:table-cell">Address</th>
-            <th className="py-2 px-3 hidden lg:table-cell">Date</th>
+            <th className="py-2 px-3">User</th>
+            {isMobile && <th className="py-2 px-3">Project</th>}
+            {isTablet && <th className="py-2 px-3">Address</th>}
+            {isDesktop && <th className="py-2 px-3">Date</th>}
             <th className="py-2 px-3">Status</th>
           </tr>
         </thead>
@@ -138,10 +146,10 @@ const ProductList = ({ productList }) => {
                 key={product.id}
                 className="border-b border-[#1C1C1C0D] dark:border-[#FFFFFF1A]"
               >
-                <td className="py-2 px-3 hidden sm:table-cell">
+                <td className="py-2 px-1 hidden sm:table-cell align-middle">
                   <label
                     htmlFor={`checkbox-${product.id}`}
-                    className="cursor-pointer"
+                    className="cursor-pointer flex items-center justify-center w-4 h-4 group"
                     onClick={(e) => {
                       e.preventDefault();
                       handleCheckboxToggle(product.id);
@@ -151,7 +159,7 @@ const ProductList = ({ productList }) => {
                       key={`checkbox-${product.id}-${checkedItems.has(
                         product.id
                       )}-${theme}`}
-                      className="w-4 h-4"
+                      className="w-4 h-4 group-active:scale-90 transition-all duration-300 ease-in-out"
                       src={getCheckboxImage(checkedItems.has(product.id))}
                       alt=""
                     />
@@ -164,22 +172,21 @@ const ProductList = ({ productList }) => {
                     onChange={() => handleCheckboxToggle(product.id)}
                   />
                 </td>
-                <td className="py-2 px-3 ">{product.id}</td>
-                <td className="py-2 px-3">
+                <td className="py-2 px-3 align-middle">{product.id}</td>
+                <td className="py-2 px-3 align-middle">
                   <div className="flex items-center gap-2">
                     <img
                       src={product.avatar}
                       alt={product.user}
                       className="w-6 h-6 rounded-full object-cover"
                     />
-                    <span className="text-sm">
-                      {product.user}
-                    </span>
+                    <span className="text-sm">{product.user}</span>
                   </div>
                 </td>
-                <td className="py-2 px-3 hidden sm:table-cell">{product.project}</td>
-                <td className="py-2 px-3 hidden md:table-cell">{product.address}</td>
-                <td className="py-2 px-3 hidden lg:table-cell">
+                {isMobile && <td className="py-2 px-3 align-middle">{product.project}</td>}
+                {isTablet && <td className="py-2 px-3 align-middle">{product.address}</td>}
+                {isDesktop && <td className="py-2 px-3 align-middle">{product.date}</td>}
+                <td className="py-2 px-3 align-middle">
                   <span className="flex items-center gap-1 ">
                     <img
                       src={
@@ -193,28 +200,30 @@ const ProductList = ({ productList }) => {
                     {product.date}
                   </span>
                 </td>
-                <td className="py-2 px-3 flex items-center">
-                  <div className="w-4 h-4 flex justify-center items-center">
-                    <div
+                <td className="py-2 px-3 align-middle">
+                  <div className="flex items-center gap-1">
+                    <div className="w-4 h-4 flex justify-center items-center">
+                      <div
+                        style={{
+                          backgroundColor:
+                            theme === THEMES.LIGHT
+                              ? getStatusBgColor(product.status)
+                              : getStatusDarkBgColor(product.status),
+                        }}
+                        className="w-1.5 h-1.5 rounded-full"
+                      ></div>
+                    </div>
+                    <p
                       style={{
-                        backgroundColor:
+                        color:
                           theme === THEMES.LIGHT
-                            ? getStatusBgColor(product.status)
-                            : getStatusDarkBgColor(product.status),
+                            ? getStatusTextColor(product.status)
+                            : getStatusDarkTextColor(product.status),
                       }}
-                      className="w-1.5 h-1.5 rounded-full"
-                    ></div>
+                    >
+                      {product.status}
+                    </p>
                   </div>
-                  <p
-                    style={{
-                      color:
-                        theme === THEMES.LIGHT
-                          ? getStatusTextColor(product.status)
-                          : getStatusDarkTextColor(product.status),
-                    }}
-                  >
-                    {product.status}
-                  </p>
                 </td>
               </tr>
             );

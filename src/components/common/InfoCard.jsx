@@ -35,7 +35,7 @@ const InfoCard = ({
             </span>
             <img
               src={`/icons/${
-                !darkMode ? "trending.svg" : "darkTheme/trending.svg"
+                (darkMode && theme === THEMES.DARK) ? "/darkTheme/trending.svg" : "trending.svg"
               }`}
               alt=""
               className={`w-4 h-4 ${percentage < 0 ? "rotate-180" : ""}`}
