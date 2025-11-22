@@ -1,5 +1,9 @@
 # Project Setup and Design Overview
 
+## Live Link
+
+https://assignments-rho-eight.vercel.app/
+
 ## Setup and Installation
 
 To run this project locally, follow these steps:
