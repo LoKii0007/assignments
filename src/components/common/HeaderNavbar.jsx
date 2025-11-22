@@ -52,26 +52,11 @@ const HeaderNavbar = () => {
       {isSmall && (
         <div className="flex items-center justify-between gap-5">
           <div className="flex items-center space-x-2 text-sm breadcrumb-section ">
-            {pathSegments.map((segment, index) => (
-              <div className="space-x-2" key={index}>
-                <>
-                  <span
-                    className={`capitalize ${
-                      index === pathSegments.length - 1
-                        ? "text-primary-dark dark:text-primary-light"
-                        : "text-[#1C1C1C66] dark:text-secondary-dark"
-                    }`}
-                  >
-                    {segment}
-                  </span>
-                  {index !== pathSegments.length - 1 && (
-                    <span className="text-[#1C1C1C66] dark:text-secondary-dark">
-                      /
-                    </span>
-                  )}
-                </>
-              </div>
-            ))}
+            <div
+              className={`capitalize text-primary-dark dark:text-primary-light ps-1`}
+            >
+              {pathSegments[pathSegments.length - 1]}
+            </div>
           </div>
           <div className="relative flex items-center search-box ml-auto">
             <img
@@ -111,7 +96,11 @@ const HeaderNavbar = () => {
             onClick={handleFavouriteClick}
             className="hover:bg-[#F3F3F3] rounded-[8px] dark:hover:bg-tertiary-dark hover-transition group"
           >
-            <img className="sm:w-7 sm:h-7 w-6 h-6 group-active:scale-90 transition-all duration-300 ease-in-out" src={getFavIcon()} alt="" />
+            <img
+              className="sm:w-7 sm:h-7 w-6 h-6 group-active:scale-90 transition-all duration-300 ease-in-out"
+              src={getFavIcon()}
+              alt=""
+            />
           </button>
 
           {!isSmall && (

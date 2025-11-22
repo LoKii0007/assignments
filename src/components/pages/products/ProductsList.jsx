@@ -107,7 +107,7 @@ const ProductList = ({ productList }) => {
       <table className="w-full ">
         <thead>
           <tr className="text-left border-b border-[#1C1C1C33] dark:border-[#FFFFFF33] text-xs text-[#1C1C1C66] dark:text-[#FFFFFF66] leading-[18px] tracking-0">
-            <th className="py-2 px-1 hidden sm:table-cell">
+            <th className="py-2 px-1 hidden sm:table-cell w-6">
               <label
                 htmlFor="select-all-checkbox"
                 className="cursor-pointer flex items-center justify-center w-4 h-4 group"
@@ -146,7 +146,7 @@ const ProductList = ({ productList }) => {
                 key={product.id}
                 className="border-b border-[#1C1C1C0D] dark:border-[#FFFFFF1A]"
               >
-                <td className="py-2 px-1 hidden sm:table-cell align-middle">
+                <td className="py-2 px-1 hidden sm:table-cell align-middle w-6">
                   <label
                     htmlFor={`checkbox-${product.id}`}
                     className="cursor-pointer flex items-center justify-center w-4 h-4 group"
