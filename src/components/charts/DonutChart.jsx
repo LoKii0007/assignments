@@ -44,10 +44,6 @@ const DonutChart = ({
     const center = size / 2;
     const totalValue = data.reduce((acc, item) => acc + item.value, 0);
 
-    // Important: We keep the "radius" of the path CONSTANT.
-    // We only change the "stroke-width" to grow the sector.
-    // This prevents the arc from jumping position during transition.
-    // We subtract the max possible thickness/2 so it never clips.
     const maxThickness = thickness + hoverOffset;
     const midRadius = size / 2 - maxThickness / 2;
 
@@ -65,7 +61,7 @@ const DonutChart = ({
         startAngle,
         endAngle,
         center,
-        midRadius, // This is constant for all sectors
+        midRadius,
       };
     });
   }, [data, size, thickness, hoverOffset]);
@@ -129,9 +125,16 @@ const DonutChart = ({
           })}
 
           {/* LAYER 2: Connector Caps */}
-          {chartData.map((segment) => {
-            const isHovered = hoveredIndex === segment.index;
-            // Calculate dynamic sizes based on hover state
+          {chartData.map((segment, index) => {
+            // 1. Identify the next segment
+            const nextIndex = (index + 1) % chartData.length;
+            const nextSegment = chartData[nextIndex];
+
+            // 2. CHECK: Is the NEXT segment hovered?
+            // Since this cap is colored like the next segment, 
+            // it should expand when the next segment is hovered.
+            const isHovered = hoveredIndex === nextIndex;
+            
             const currentThickness = isHovered
               ? thickness + hoverOffset
               : thickness;
@@ -164,15 +167,16 @@ const DonutChart = ({
             return (
               <g
                 key={`cap-group-${segment.index}`}
-                style={{ pointerEvents: "none" }} // Pass clicks through to the arc
+                style={{ pointerEvents: "none" }}
               >
                 {/* A. Fill Circle (The Connector) */}
                 <circle
                   cx={capCenter.x}
                   cy={capCenter.y}
                   r={capRadius}
+                  // Uses next segment color
                   fill={
-                    theme === THEMES.LIGHT ? segment.fill : segment.darkFill
+                    theme === THEMES.LIGHT ? nextSegment.fill : nextSegment.darkFill
                   }
                   style={{ ...transitionStyle }}
                 />
@@ -181,14 +185,13 @@ const DonutChart = ({
                 <path
                   d={`
                     M ${borderInnerPoint.x} ${borderInnerPoint.y}
-                    A ${borderPathRadius} ${borderPathRadius} 0 0 0 ${borderOuterPoint.x} ${borderOuterPoint.y}
+                    A ${borderPathRadius} ${borderPathRadius} 0 0 1 ${borderOuterPoint.x} ${borderOuterPoint.y}
                   `}
+                  // Sweep flag is 1 (opposite curve)
                   fill="none"
                   stroke={borderColor}
                   strokeWidth={borderWidth}
                   strokeLinecap="round"
-                  // Note: 'd' transition support varies by browser, but since
-                  // we transition the circle and stroke-width, it looks cohesive.
                   style={{ ...transitionStyle }}
                 />
               </g>
@@ -201,7 +204,7 @@ const DonutChart = ({
       {hoveredIndex !== null && chartData[hoveredIndex] && (() => {
         const totalValue = data.reduce((acc, item) => acc + item.value, 0);
         const percent = ((chartData[hoveredIndex].value / totalValue) * 100).toFixed(1);
-        
+
         return (
           <div
             style={{

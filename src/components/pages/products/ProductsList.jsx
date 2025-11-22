@@ -191,8 +191,8 @@ const ProductList = ({ productList }) => {
                     <img
                       src={
                         theme === THEMES.LIGHT
-                          ? "/icons/calendarBlank.svg"
-                          : "/icons/darkTheme/calendarBlank.svg"
+                          ? "/icons/calendar.svg"
+                          : "/icons/darkTheme/calendar.svg"
                       }
                       alt=""
                       className="w-4 h-4"
