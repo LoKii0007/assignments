@@ -27,13 +27,23 @@ const useWindow = ({ ref } = {}) => {
   const [screen, setScreen] = useState(getSizes());
 
   useEffect(() => {
-    const handleResize = () => {
-      setScreen(getSizes());
-    };
+    const update = () => setScreen(getSizes());
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    /* ✅ ADDED: ResizeObserver for ref-based resize detection */
+    if (ref?.current) {
+      const observer = new ResizeObserver(() => {
+        update(); // 🔥 triggers when ref size changes instead of window only
+      });
+
+      observer.observe(ref.current);
+
+      return () => observer.disconnect(); // ✅ ADDED: cleanup for observer
+    }
+
+    /* ✅ CHANGED: window resize only used when no ref is passed */
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [ref]); // ✅ CHANGED: ref added to dependency array
 
   return screen;
 };

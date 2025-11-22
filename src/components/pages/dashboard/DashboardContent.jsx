@@ -3,12 +3,12 @@ import InfoCard from "@/components/common/InfoCard";
 import DoubleBarChart from "@/components/charts/DoubleBarChart";
 import ProductList from "./ProductList";
 import Chart from "@/components/charts/LineChart";
-import PieChartWithPaddingAngle from "@/components/charts/PieChart";
-import ExampleChart from "@/components/charts/ExampleChart";
-import WorldMap from "@/components/charts/WorldMap";
+// import WorldMap from "@/components/charts/WorldMap";
 import { THEMES } from "@/utils/constants";
 import { useAppContext } from "@/context/AppContext";
 import useWindow from "@/hooks/useWindow";
+import DonutChart from "@/components/charts/DonutChart";
+import WorldChart from "@/components/charts/WorldChart";
 
 const sampleSalesData = [
   { name: "Direct", value: 300.56, fill: "#1C1C1C", darkFill: "#C6C7F8" },
@@ -78,9 +78,11 @@ const infoData = [
 const DashboardContent = () => {
   const { theme } = useAppContext();
   const mainPageRef = useRef(null);
-  const { isDesktop, isTablet, isMobile, isSmall } = useWindow({
+  const { isDesktop, isTablet, isMobile, isSmall, isLargeDesktop } = useWindow({
     ref: mainPageRef,
   });
+
+  
 
   return (
     <main
@@ -147,7 +149,6 @@ const DashboardContent = () => {
               </p>
             </div>
             <div className="sm:space-x-4 flex sm:items-center sm:flex-row flex-col">
-
               <div className="flex items-center text-xs py-0.5 ps-1 pe-2">
                 <div className="h-4 w-4 flex items-center justify-center">
                   <div className="w-1.5 h-1.5 bg-primary-dark dark:bg-[#C6C7F8] rounded-full"></div>
@@ -182,7 +183,8 @@ const DashboardContent = () => {
             Revenue by Location
           </h3>
           <div className="flex justify-center relative flex-1 min-h-[120px] min-w-[120px] overflow-hidden">
-            <WorldMap />
+            {/* <WorldMap /> */}
+            <WorldChart />
           </div>
           <div className="space-y-4">
             {locationData.map((item, idx) => (
@@ -206,8 +208,8 @@ const DashboardContent = () => {
         </div>
 
         {/* Top Selling Products Table */}
-        {isDesktop && (
-          <div className=" col-span-4">
+        {(isDesktop || isLargeDesktop) && (
+          <div className=" col-span-3">
             <ProductList />
           </div>
         )}
@@ -215,15 +217,14 @@ const DashboardContent = () => {
         {/* Total Sales Donut Chart */}
         <div
           className={` ${
-            isDesktop ? "col-span-1" : "xxs:col-span-2 col-span-4"
+            (isDesktop || isLargeDesktop) ? "col-span-1" : "xxs:col-span-2 col-span-4"
           } bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] space-y-4 flex flex-col font-[Inter] max-h-[400px]`}
         >
           <h3 className="text-sm font-semibold text-primary-dark leading-[20px] tracking-0 shrink-0 dark:text-primary-light">
             Total Sales
           </h3>
           <div className="flex justify-center relative flex-1 min-h-[120px] min-w-[120px]">
-            <PieChartWithPaddingAngle data={sampleSalesData} />
-            {/* <ExampleChart /> */}
+            <DonutChart data={sampleSalesData} borderColor={theme === THEMES.LIGHT ? "#F7F9FB" : "#282828"} />
           </div>
           <div className="space-y-3">
             {sampleSalesData.map((item, idx) => (
@@ -249,7 +250,7 @@ const DashboardContent = () => {
           </div>
         </div>
 
-        {!isDesktop && (
+        {!(isDesktop || isLargeDesktop) && (
           <div className="col-span-4">
             <ProductList />
           </div>

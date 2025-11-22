@@ -1,11 +1,12 @@
 import {
-  LineChart,
+  ComposedChart,
   Line,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  ReferenceLine
+  ReferenceLine,
 } from "recharts";
 import { getRoundedMax } from "../../utils/helpers";
 import { useAppContext } from "@/context/AppContext";
@@ -21,7 +22,7 @@ const sampleData = [
 ];
 
 const Chart = () => {
- const { theme } = useAppContext();
+  const { theme } = useAppContext();
 
   const allValues = sampleData.flatMap((item) => [
     item.projection,
@@ -29,9 +30,7 @@ const Chart = () => {
   ]);
 
   const maxValue = Math.max(...allValues);
-
   const roundedMax = getRoundedMax(maxValue);
-
 
   return (
     <div className=" flex w-full h-full gap-4 flex-1 min-h-[235px]">
@@ -60,10 +59,18 @@ const Chart = () => {
           <div className="h-[1px] w-full bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] absolute top-1/3 left-0"></div>
           <div className="h-[1px] w-full bg-[#1C1C1C0D] dark:bg-[#FFFFFF1A] absolute top-2/3 left-0"></div>
           <div className="h-[1px] w-full bg-[#1C1C1C33] dark:bg-[#FFFFFF33] absolute bottom-0 left-0"></div>
-          <ResponsiveContainer width="90%" height="100%" className="">
-            <LineChart data={sampleData}>
 
-              <ReferenceLine y={20000000} stroke="#1C1C1C0D" />
+          <ResponsiveContainer width="90%" height="100%" className="">
+            <ComposedChart data={sampleData}>
+              
+              {/* Radial Gradient for the projection area */}
+              <defs>
+                <radialGradient id="radialProjection" cx="50%" cy="0%" r="70%">
+                  <stop offset="0%" stopColor="#A8C5DA" stopOpacity={0.6} />
+                  <stop offset="60%" stopColor="#A8C5DA" stopOpacity={0} />
+                </radialGradient>
+              </defs>
+
               <XAxis
                 dataKey="month"
                 allowDuplicatedCategory={false}
@@ -71,7 +78,17 @@ const Chart = () => {
               />
               <YAxis domain={[0, roundedMax]} hide={true} width={0} />
 
-              {/* Blue projection line */}
+              <Area
+                type="natural"
+                dataKey="projection"
+                data={sampleData.slice(0, 4)} 
+                strokeWidth={0} 
+                stroke="none"
+                fill="url(#radialProjection)" 
+                activeDot={false}
+              />
+
+              {/* Line for the solid stroke on top */}
               <Line
                 type="natural"
                 dataKey="projection"
@@ -80,7 +97,7 @@ const Chart = () => {
                 dot={false}
               />
 
-              {/* Actual line — normal (before dashed segment) */}
+              {/* Solid part of the actual line */}
               <Line
                 type="natural"
                 data={sampleData.slice(0, 4)}
@@ -90,7 +107,7 @@ const Chart = () => {
                 dot={false}
               />
 
-              {/* Dashed section */}
+              {/* Dashed part of the actual line */}
               <Line
                 type="natural"
                 data={sampleData.slice(3, sampleData.length)}
@@ -112,13 +129,11 @@ const Chart = () => {
                   fontFamily: "Inter",
                   color: "#1C1C1C",
                   padding: 10,
-                  borderRadius: 8,
                   boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
                   zIndex: 1000,
                 }}
               />
-
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
         <div className="flex justify-center">
