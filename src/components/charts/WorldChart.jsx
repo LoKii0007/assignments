@@ -52,25 +52,20 @@ const WorldChart = () => {
         topology,
         fill: theme === THEMES.LIGHT ? "#D0DFEB" : "#677680",
         stroke: theme === THEMES.LIGHT ? "#F7F9FB" : "#282828",
-        strokeWidth: 2,
+        strokeWidth: 1,
       },
       {
         type: "map-marker",
-        // 1. Bind data keys (REQUIRED)
         latitudeKey: "lat",
         longitudeKey: "lon",
         idKey: "name",
         labelKey: "name",
         data: markersData,
-
-        // 2. Move style props to top level (map-marker does NOT use a 'marker' object)
         shape: "circle",
-        size: 4, // Sets the fixed size (or min size if sizeKey is used)
+        size: 4, 
         fill: theme === THEMES.LIGHT ? "#1C1C1C" : "#C6C7F8",
         stroke: "#FFFFFF",
         strokeWidth: 1,
-        
-        // 3. Shadow is also a top-level property for this series type
         shadow: {
           enabled: true,
           blur: 6,
