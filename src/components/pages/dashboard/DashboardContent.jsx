@@ -173,7 +173,7 @@ const DashboardContent = () => {
         {/* world map  */}
         <div
           className={` ${
-            isDesktop ? "col-span-1" : "xxs:col-span-2 col-span-4"
+            isDesktop ? "col-span-1" : "md:col-span-2 col-span-4"
           } bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] space-y-4 flex flex-col font-[Inter] max-h-[400px]`}
         >
           <h3 className="text-sm font-semibold text-primary-dark dark:text-primary-light leading-[20px] tracking-0 shrink-0">
@@ -214,7 +214,7 @@ const DashboardContent = () => {
         {/* Total Sales Donut Chart */}
         <div
           className={` ${
-            isDesktop ? "col-span-1" : "xxs:col-span-2 col-span-4"
+            isDesktop ? "col-span-1" : "md:col-span-2 col-span-4"
           } bg-[#F7F9FB] dark:bg-[#FFFFFF0D] p-4 sm:p-6 rounded-[16px] space-y-4 flex flex-col font-[Inter] max-h-[400px]`}
         >
           <h3 className="text-sm font-semibold text-primary-dark leading-[20px] tracking-0 shrink-0 dark:text-primary-light">
